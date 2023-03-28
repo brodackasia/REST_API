@@ -20,5 +20,17 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Database\Connection:
+        arguments: [
+            '%env(DATABASE_ADAPTER)%',
+            '%env(DATABASE_NAME)%',
+            '%env(DATABASE_HOST)%',
+            '%env(DATABASE_PORT)%',
+            '%env(DATABASE_USER)%',
+            '%env(DATABASE_PASSWORD)%'
+        ]
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+

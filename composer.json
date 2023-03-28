@@ -14,7 +14,9 @@
         "symfony/framework-bundle": "6.3.*",
         "symfony/monolog-bundle": "^3.8",
         "symfony/runtime": "6.3.*",
-        "symfony/yaml": "6.3.*"
+        "symfony/yaml": "6.3.*",
+      "ext-http": "*",
+      "ext-pdo": "*"
     },
     "config": {
         "allow-plugins": {
