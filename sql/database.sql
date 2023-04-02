@@ -27,3 +27,14 @@ CREATE TABLE company_employee (
     PRIMARY KEY (company_id, employee_id)
 );
 
+INSERT INTO company (name, vat_identification_number, address, city, zip_code)
+    VALUES ('Shop1', '1234567890', 'ul.Przykładowa 1', 'Pzykładowo', '11-111'),
+           ('Shop2', '2345678901', 'ul.Przykładowa 2', 'Pzykładowo', '11-111');
+
+INSERT INTO employee (name, surname, email, phone_number)
+    VALUES ('Jan', 'Kowalski', 'Jan@Kowalski.pl', '123456789'),
+           ('Jan', 'Nowak', 'Jan@Nowak.pl', '234567890');
+
+INSERT INTO company_employee (company_id, employee_id)
+    VALUES ('1', '1'),
+           ('2', '2');
