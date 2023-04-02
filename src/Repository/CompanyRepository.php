@@ -24,7 +24,7 @@ class CompanyRepository
             SELECT 
                 id, "name", vat_identification_number, address, city, zip_code
             FROM 
-                company as c
+                company AS c
             WHERE
                 c.id = :companyId
         SQL);
@@ -33,7 +33,7 @@ class CompanyRepository
             'companyId' => $companyId
         ]);
 
-        return CompanyDTOFactory::createCompanyDTO(
+        return CompanyDTOFactory::createFromArray(
             $statement->fetch(PDO::FETCH_ASSOC)
         );
     }

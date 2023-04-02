@@ -8,7 +8,7 @@ use App\DTO\CompanyDTO;
 
 class CompanyDTOFactory
 {
-    public static function createCompanyDTO(array $data): CompanyDTO
+    public static function createFromArray(array $data): CompanyDTO
     {
         return new CompanyDTO(
             $data['id'],

@@ -19,10 +19,10 @@ class CompanyController extends AbstractController
         $this->companyService = $companyService;
     }
 
-    #[Route('get/company/', name: 'get_company', methods: 'GET')]
+    #[Route('get/company', name: 'get_company', methods: 'GET')]
     public function getCompany(Request $request): JsonResponse
     {
-        $companyId = (int)$request->query->get('id');
+        $companyId = (int) $request->query->get('id');
 
         return new JsonResponse(
             $this->companyService->getCompany($companyId)->toArray()

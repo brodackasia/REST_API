@@ -66,13 +66,13 @@ class CompanyDTO
 
     public function toArray(): array
     {
-        return ([
+        return [
             'companyId' => $this->getCompanyId(),
             'companyName' => $this->getCompanyName(),
             'companyVatIdentificationNumber' => $this->getCompanyVatIdentificationNumber(),
             'companyAddress' => $this->getCompanyAddress(),
             'companyCity' => $this->getCompanyCity(),
-            'companyZipCode' => $this->getCompanyZipCode()
-        ]);
+            'companyZipCode' => $this->getCompanyZipCode(),
+        ];
     }
 }
