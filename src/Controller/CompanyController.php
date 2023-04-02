@@ -6,21 +6,26 @@ namespace App\Controller;
 
 use App\Service\CompanyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class CompanyController extends AbstractController
 {
-    public CompanyService $companyService;
+    private CompanyService $companyService;
 
     function __construct(CompanyService $companyService)
     {
         $this->companyService = $companyService;
     }
 
-    #[Route('get/company/')]
-    public function getCompany(): Response
+    #[Route('get/company/', name: 'get_company', methods: 'GET')]
+    public function getCompany(Request $request): JsonResponse
     {
-        return new Response('git');
+        $companyId = (int)$request->query->get('id');
+
+        return new JsonResponse(
+            $this->companyService->getCompany($companyId)->toArray()
+        );
     }
 }

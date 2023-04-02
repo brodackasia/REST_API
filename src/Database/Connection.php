@@ -18,7 +18,7 @@ class Connection extends PDO
     ) {
         parent::__construct(
             sprintf(
-                '%s:dbname=%s;host=%s;port=%s',
+            '%s:dbname=%s;host=%s;port=%s',
                 $dsn,
                 $database,
                 $host,
