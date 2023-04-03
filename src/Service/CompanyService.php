@@ -20,4 +20,9 @@ class CompanyService
     {
         return $this->companyRepository->getCompanyData($companyId);
     }
+
+    public function getAllCompanies(): array
+    {
+        return $this->companyRepository->getAllCompaniesData();
+    }
 }

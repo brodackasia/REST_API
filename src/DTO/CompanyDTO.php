@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
-class CompanyDTO
+use JsonSerializable;
+
+class CompanyDTO implements JsonSerializable
 {
     private int $companyId;
 
@@ -64,7 +66,7 @@ class CompanyDTO
         return $this->companyZipCode;
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'companyId' => $this->getCompanyId(),
@@ -75,4 +77,5 @@ class CompanyDTO
             'companyZipCode' => $this->getCompanyZipCode(),
         ];
     }
+
 }

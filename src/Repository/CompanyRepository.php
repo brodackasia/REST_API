@@ -37,4 +37,20 @@ class CompanyRepository
             $statement->fetch(PDO::FETCH_ASSOC)
         );
     }
+
+    public function getAllCompaniesData(): array
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT 
+                id, "name", vat_identification_number, address, city, zip_code
+            FROM 
+                company AS c
+        SQL);
+
+        $statement->execute();
+
+        return CompanyDTOFactory::createCollectionFromArray(
+            $statement->fetchAll(PDO::FETCH_ASSOC)
+        );
+    }
 }
