@@ -23,9 +23,11 @@ class CompanyDTOFactory
     public static function createCollectionFromArray(array $data): array
     {
         $result = [];
+
         foreach ($data as $collectionArray) {
             $result[] = CompanyDTOFactory::createFromArray($collectionArray);
         }
+
         return $result;
     }
 }

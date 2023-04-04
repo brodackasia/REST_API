@@ -22,7 +22,12 @@ class CompanyRepository
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT 
-                id, "name", vat_identification_number, address, city, zip_code
+                c.id, 
+                c."name", 
+                c.vat_identification_number, 
+                c.address, 
+                c.city, 
+                c.zip_code
             FROM 
                 company AS c
             WHERE
@@ -42,7 +47,12 @@ class CompanyRepository
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT 
-                id, "name", vat_identification_number, address, city, zip_code
+                c.id, 
+                c."name", 
+                c.vat_identification_number, 
+                c.address, 
+                c.city, 
+                c.zip_code            
             FROM 
                 company AS c
         SQL);
