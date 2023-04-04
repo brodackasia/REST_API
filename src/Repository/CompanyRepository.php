@@ -43,7 +43,7 @@ class CompanyRepository
         );
     }
 
-    public function getAllCompaniesData(): array
+    public function getCompaniesData(): array
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT 

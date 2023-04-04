@@ -18,7 +18,7 @@ class EmployeeController extends AbstractController
         $this->employeeService = $employeeService;
     }
 
-    #[Route('/employee/{employeeId}', name:'employee', methods: 'GET')]
+    #[Route('/employee/{employeeId}', name:'get_employee', methods: 'GET')]
     public function getEmployee(int $employeeId): JsonResponse
     {
         return new JsonResponse(

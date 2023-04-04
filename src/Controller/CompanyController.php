@@ -18,7 +18,7 @@ class CompanyController extends AbstractController
         $this->companyService = $companyService;
     }
 
-    #[Route('/company/{companyId}', name: 'company', methods: 'GET')]
+    #[Route('/company/{companyId}', name: 'get_company', methods: 'GET')]
     public function getCompany(int $companyId): JsonResponse
     {
         return new JsonResponse(
@@ -26,11 +26,11 @@ class CompanyController extends AbstractController
         );
     }
 
-    #[Route('/companies', name: 'all_companies', methods: 'GET')]
-    public function getAllCompanies(): JsonResponse
+    #[Route('/companies', name: 'get_companies', methods: 'GET')]
+    public function getCompanies(): JsonResponse
     {
         return new JsonResponse(
-            $this->companyService->getAllCompanies()
+            $this->companyService->getCompanies()
         );
     }
 }
