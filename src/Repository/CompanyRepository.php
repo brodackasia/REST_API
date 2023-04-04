@@ -13,7 +13,7 @@ class CompanyRepository
 {
     private Connection $db;
 
-    function __construct(Connection $db)
+    public function __construct(Connection $db)
     {
         $this->db = $db;
     }
