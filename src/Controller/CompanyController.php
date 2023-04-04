@@ -13,7 +13,7 @@ class CompanyController extends AbstractController
 {
     private CompanyService $companyService;
 
-    function __construct(CompanyService $companyService)
+    public function __construct(CompanyService $companyService)
     {
         $this->companyService = $companyService;
     }

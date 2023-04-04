@@ -20,7 +20,7 @@ class CompanyDTO implements JsonSerializable
 
     private string $companyZipCode;
 
-    function __construct(
+    public function __construct(
         int $companyId,
         string $companyName,
         string $companyAddress,
