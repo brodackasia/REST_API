@@ -8,7 +8,6 @@ use App\Service\CompanyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 class CompanyController extends AbstractController
 {
@@ -19,21 +18,19 @@ class CompanyController extends AbstractController
         $this->companyService = $companyService;
     }
 
-    #[Route('get/company', name: 'get_company', methods: 'GET')]
-    public function getCompany(Request $request): JsonResponse
+    #[Route('/company/{companyId}', name: 'get_company', methods: 'GET')]
+    public function getCompany(int $companyId): JsonResponse
     {
-        $companyId = (int) $request->query->get('id');
-
         return new JsonResponse(
             $this->companyService->getCompany($companyId)
         );
     }
 
-    #[Route('get/companies', name: 'get_all_companies', methods: 'GET')]
-    public function getAllCompanies(): JsonResponse
+    #[Route('/companies', name: 'get_companies', methods: 'GET')]
+    public function getCompanies(): JsonResponse
     {
         return new JsonResponse(
-            $this->companyService->getAllCompanies()
+            $this->companyService->getCompanies()
         );
     }
 }

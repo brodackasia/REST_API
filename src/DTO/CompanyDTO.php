@@ -77,5 +77,4 @@ class CompanyDTO implements JsonSerializable
             'companyZipCode' => $this->getCompanyZipCode(),
         ];
     }
-
 }

@@ -21,8 +21,8 @@ class CompanyService
         return $this->companyRepository->getCompanyData($companyId);
     }
 
-    public function getAllCompanies(): array
+    public function getCompanies(): array
     {
-        return $this->companyRepository->getAllCompaniesData();
+        return $this->companyRepository->getCompaniesData();
     }
 }
