@@ -7,7 +7,6 @@ namespace App\Controller;
 use App\Service\EmployeeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class EmployeeController extends AbstractController
@@ -26,5 +25,4 @@ class EmployeeController extends AbstractController
             $this->employeeService->getEmployee($employeeId)
         );
     }
-
 }

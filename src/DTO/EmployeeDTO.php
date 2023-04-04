@@ -67,5 +67,4 @@ class EmployeeDTO implements JsonSerializable
             'employeePhoneNumber' => $this->getPhoneNumber(),
         ];
     }
-
 }
