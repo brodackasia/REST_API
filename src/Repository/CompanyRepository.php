@@ -22,7 +22,12 @@ class CompanyRepository
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT 
-                id, "name", vat_identification_number, address, city, zip_code
+                c.id, 
+                c."name", 
+                c.vat_identification_number, 
+                c.address, 
+                c.city, 
+                c.zip_code
             FROM 
                 company AS c
             WHERE
@@ -35,6 +40,27 @@ class CompanyRepository
 
         return CompanyDTOFactory::createFromArray(
             $statement->fetch(PDO::FETCH_ASSOC)
+        );
+    }
+
+    public function getAllCompaniesData(): array
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT 
+                c.id, 
+                c."name", 
+                c.vat_identification_number, 
+                c.address, 
+                c.city, 
+                c.zip_code            
+            FROM 
+                company AS c
+        SQL);
+
+        $statement->execute();
+
+        return CompanyDTOFactory::createCollectionFromArray(
+            $statement->fetchAll(PDO::FETCH_ASSOC)
         );
     }
 }
