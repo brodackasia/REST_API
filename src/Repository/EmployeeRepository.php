@@ -41,4 +41,24 @@ class EmployeeRepository
             $statement->fetch(PDO::FETCH_ASSOC)
         );
     }
+
+    public function getEmployeesData(): array
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT 
+                e.id,
+                e."name",
+                e.surname,
+                e.email,
+                e.phone_number
+            FROM 
+                employee AS e
+        SQL);
+
+        $statement->execute();
+
+        return EmployeeDTOFactory::createCollectionFromArray(
+            $statement->fetchAll(PDO::FETCH_ASSOC)
+        );
+    }
 }
