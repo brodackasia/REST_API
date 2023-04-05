@@ -24,7 +24,7 @@ class EmployeeDTOFactory
         $result = [];
 
         foreach ($data as $collectionArray) {
-            $result [] = EmployeeDTOFactory::createFromArray($collectionArray);
+            $result[] = EmployeeDTOFactory::createFromArray($collectionArray);
         }
 
         return $result;
