@@ -25,4 +25,12 @@ class EmployeeController extends AbstractController
             $this->employeeService->getEmployee($employeeId)
         );
     }
+
+    #[Route('/employees', name: 'get_employees', methods: 'GET')]
+    public function getEmployees(): JsonResponse
+    {
+        return new JsonResponse(
+            $this->employeeService->getEmployees()
+        );
+    }
 }

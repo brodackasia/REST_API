@@ -18,4 +18,15 @@ class EmployeeDTOFactory
             $data['phone_number']
         );
     }
+
+    public static function createCollectionFromArray(array $data): array
+    {
+        $result = [];
+
+        foreach ($data as $collectionArray) {
+            $result [] = EmployeeDTOFactory::createFromArray($collectionArray);
+        }
+
+        return $result;
+    }
 }

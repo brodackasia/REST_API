@@ -20,4 +20,9 @@ class EmployeeService
     {
         return $this->employeeRepository->getEmployeeData($employeeId);
     }
+
+    public function getEmployees(): array
+    {
+        return $this->employeeRepository->getEmployeesData();
+    }
 }
