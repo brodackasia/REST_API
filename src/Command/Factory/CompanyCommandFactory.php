@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Command\Factory;
+
+use App\Command\CompanyCommand;
+
+class CompanyCommandFactory
+{
+    public static function createCommandFromPostData(array $companyData): CompanyCommand
+    {
+        return new CompanyCommand(
+            $companyData['name'],
+            $companyData['vatIdentificationNumber'],
+            $companyData['address'],
+            $companyData['city'],
+            $companyData['zipCode']
+        );
+    }
+}

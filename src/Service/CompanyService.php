@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Command\CompanyCommand;
 use App\DTO\CompanyDTO;
 use App\Repository\CompanyRepository;
 
@@ -24,5 +25,10 @@ class CompanyService
     public function getCompanies(): array
     {
         return $this->companyRepository->getCompaniesData();
+    }
+
+    public function createCompany(CompanyCommand $companyCommand): int
+    {
+         return $this->companyRepository->createCompanyData($companyCommand);
     }
 }
