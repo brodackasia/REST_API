@@ -6,52 +6,52 @@ namespace App\Command;
 
 class CompanyCommand
 {
-    private string $companyName;
+    private string $name;
 
-    private string $companyVatIdentificationNumber;
+    private string $vatIdentificationNumber;
 
-    private string $companyAddress;
+    private string $address;
 
-    private string $companyCity;
+    private string $city;
 
-    private string $companyZipCode;
+    private string $zipCode;
 
     public function __construct(
-        string $companyName,
-        string $companyVatIdentificationNumber,
-        string $companyAddress,
-        string $companyCity,
-        string $companyZipCode
+        string $name,
+        string $vatIdentificationNumber,
+        string $address,
+        string $city,
+        string $zipCode
     ) {
-        $this->companyName = $companyName;
-        $this->companyVatIdentificationNumber = $companyVatIdentificationNumber;
-        $this->companyAddress = $companyAddress;
-        $this->companyCity = $companyCity;
-        $this->companyZipCode = $companyZipCode;
+        $this->name = $name;
+        $this->vatIdentificationNumber = $vatIdentificationNumber;
+        $this->address = $address;
+        $this->city = $city;
+        $this->zipCode = $zipCode;
     }
 
-    public function getCompanyName(): string
+    public function getName(): string
     {
-        return $this->companyName;
+        return $this->name;
     }
 
-    public function getCompanyVatIdentificationNumber(): string
+    public function getVatIdentificationNumber(): string
     {
-        return $this->companyVatIdentificationNumber;
+        return $this->vatIdentificationNumber;
     }
 
-    public function getCompanyAddress(): string
+    public function getAddress(): string
     {
-        return $this->companyAddress;
+        return $this->address;
     }
 
-    public function getCompanyCity(): string
+    public function getCity(): string
     {
-        return $this->companyCity;
+        return $this->city;
     }
 
-    public function getCompanyZipCode(): string
+    public function getZipCode(): string
     {
-        return $this->companyZipCode;
+        return $this->zipCode;
     }
 }

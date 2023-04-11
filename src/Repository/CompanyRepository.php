@@ -77,11 +77,11 @@ class CompanyRepository
         SQL);
 
         $statement->execute([
-            $companyCommand->getCompanyName(),
-            $companyCommand->getCompanyVatIdentificationNumber(),
-            $companyCommand->getCompanyAddress(),
-            $companyCommand->getCompanyCity(),
-            $companyCommand->getCompanyZipCode()
+            'name' => $companyCommand->getName(),
+            'vat_identification_number' => $companyCommand->getVatIdentificationNumber(),
+            'address' => $companyCommand->getAddress(),
+            'city' => $companyCommand->getCity(),
+            'zip_code' => $companyCommand->getZipCode()
         ]);
 
         $createdCompanyId = $statement->fetch(PDO::FETCH_ASSOC);
