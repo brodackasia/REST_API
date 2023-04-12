@@ -12,10 +12,10 @@ class CompanyCommandFactory
     {
         return new CompanyCommand(
             $companyData['name'],
-            $companyData['vatIdentificationNumber'],
+            $companyData['vat_identification_number'],
             $companyData['address'],
             $companyData['city'],
-            $companyData['zipCode']
+            $companyData['zip_code']
         );
     }
 }

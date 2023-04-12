@@ -27,7 +27,7 @@ class CompanyService
         return $this->companyRepository->getCompaniesData();
     }
 
-    public function createCompany(CompanyCommand $companyCommand): int
+    public function createCompany(CompanyCommand $companyCommand): array
     {
          return $this->companyRepository->createCompanyData($companyCommand);
     }

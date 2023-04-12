@@ -65,7 +65,7 @@ class CompanyRepository
         );
     }
 
-    public function createCompanyData(CompanyCommand $companyCommand): int
+    public function createCompanyData(CompanyCommand $companyCommand): array
     {
         $statement = $this->db->prepare(<<<SQL
             INSERT INTO 
@@ -73,7 +73,7 @@ class CompanyRepository
             VALUES 
                 (:name, :vat_identification_number, :address, :city, :zip_code)
             RETURNING 
-                id 
+                id AS createdCompanyId
         SQL);
 
         $statement->execute([
@@ -84,8 +84,10 @@ class CompanyRepository
             'zip_code' => $companyCommand->getZipCode()
         ]);
 
-        $createdCompanyId = $statement->fetch(PDO::FETCH_ASSOC);
+        $createdCompanyId = [
+            'createdCompanyId' => $statement->fetch(PDO::FETCH_ASSOC)
+        ];
 
-        return $createdCompanyId['id'];
+        return $createdCompanyId['createdCompanyId'];
     }
 }
