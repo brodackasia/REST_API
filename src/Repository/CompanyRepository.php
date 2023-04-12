@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Command\CompanyCommand;
 use App\Database\Connection;
 use App\DTO\CompanyDTO;
 use App\DTO\Factory\CompanyDTOFactory;
@@ -62,5 +63,29 @@ class CompanyRepository
         return CompanyDTOFactory::createCollectionFromArray(
             $statement->fetchAll(PDO::FETCH_ASSOC)
         );
+    }
+
+    public function createCompanyData(CompanyCommand $companyCommand): int
+    {
+        $statement = $this->db->prepare(<<<SQL
+            INSERT INTO 
+                company ("name", vat_identification_number, address, city, zip_code)
+            VALUES 
+                (:name, :vat_identification_number, :address, :city, :zip_code)
+            RETURNING 
+                id 
+        SQL);
+
+        $statement->execute([
+            'name' => $companyCommand->getName(),
+            'vat_identification_number' => $companyCommand->getVatIdentificationNumber(),
+            'address' => $companyCommand->getAddress(),
+            'city' => $companyCommand->getCity(),
+            'zip_code' => $companyCommand->getZipCode()
+        ]);
+
+        $createdCompanyId = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $createdCompanyId['id'];
     }
 }

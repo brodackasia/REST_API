@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Command\CompanyCommand;
+use App\Command\Factory\CompanyCommandFactory;
 use App\Service\CompanyService;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CompanyController extends AbstractController
@@ -31,6 +35,21 @@ class CompanyController extends AbstractController
     {
         return new JsonResponse(
             $this->companyService->getCompanies()
+        );
+    }
+
+    #[Route('/company', name: 'create_company', methods: 'POST')]
+    public function createCompany(Request $request): JsonResponse
+    {
+        return new JsonResponse(
+            [
+                'companyId' => $this->companyService->createCompany(
+                    CompanyCommandFactory::createCommandFromPostData(
+                        $request->request->all()
+                    )
+                )
+            ],
+            Response::HTTP_CREATED
         );
     }
 }
