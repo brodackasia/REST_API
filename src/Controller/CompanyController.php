@@ -42,11 +42,14 @@ class CompanyController extends AbstractController
     public function createCompany(Request $request): JsonResponse
     {
         return new JsonResponse(
-            $this->companyService->createCompany(
-                CompanyCommandFactory::createCommandFromPostData(
-                    $request->request->all()
+            [
+                'companyId' => $this->companyService->createCompany(
+                    CompanyCommandFactory::createCommandFromPostData(
+                        $request->request->all()
+                    )
                 )
-            ), Response::HTTP_CREATED
+            ],
+            Response::HTTP_CREATED
         );
     }
 }
