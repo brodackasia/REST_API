@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Command\EmployeeCommand;
 use App\DTO\EmployeeDTO;
 use App\Repository\EmployeeRepository;
 
@@ -24,5 +25,10 @@ class EmployeeService
     public function getEmployees(): array
     {
         return $this->employeeRepository->getEmployeesData();
+    }
+
+    public function createEmployee(EmployeeCommand $employeeCommand): int
+    {
+        return $this->employeeRepository->createEmployeeData($employeeCommand);
     }
 }

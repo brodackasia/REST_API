@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Command\EmployeeCommand;
 use App\Database\Connection;
 use App\DTO\EmployeeDTO;
 use App\DTO\Factory\EmployeeDTOFactory;
@@ -60,5 +61,28 @@ class EmployeeRepository
         return EmployeeDTOFactory::createCollectionFromArray(
             $statement->fetchAll(PDO::FETCH_ASSOC)
         );
+    }
+
+    public function createEmployeeData(EmployeeCommand $employeeCommand): int
+    {
+        $statement = $this->db->prepare(<<<SQL
+           INSERT INTO 
+               employee ("name", surname, email, phone_number) 
+           VALUES 
+               (:name, :surname, :email, :phone_number)
+           RETURNING 
+               id
+        SQL);
+
+        $statement->execute([
+            'name' => $employeeCommand->getName(),
+            'surname' => $employeeCommand->getSurname(),
+            'email' => $employeeCommand->getEmail(),
+            'phone_number' => $employeeCommand->getPhoneNumber()
+        ]);
+
+        $createdEmployeeId = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $createdEmployeeId ['id'];
     }
 }

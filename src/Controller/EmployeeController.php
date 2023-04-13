@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Command\Factory\EmployeeCommandFactory;
+use App\DTO\Factory\EmployeeDTOFactory;
 use App\Service\EmployeeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class EmployeeController extends AbstractController
@@ -31,6 +35,21 @@ class EmployeeController extends AbstractController
     {
         return new JsonResponse(
             $this->employeeService->getEmployees()
+        );
+    }
+
+    #[Route('/employee', name: 'create_employee', methods: 'POST')]
+    public function createEmployee(Request $request): JsonResponse
+    {
+        return new JsonResponse(
+            [
+                'employeeId' => $this->employeeService->createEmployee(
+                    EmployeeCommandFactory::createCommandFromArray(
+                        $request->request->all()
+                    )
+                )
+            ],
+            Response::HTTP_CREATED
         );
     }
 }
