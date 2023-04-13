@@ -8,7 +8,7 @@ use App\Command\CompanyCommand;
 
 class CompanyCommandFactory
 {
-    public static function createCommandFromPostData(array $companyData): CompanyCommand
+    public static function createCommandFromRequestData(array $companyData): CompanyCommand
     {
         return new CompanyCommand(
             $companyData['name'],

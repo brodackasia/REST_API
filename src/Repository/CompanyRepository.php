@@ -88,4 +88,31 @@ class CompanyRepository
 
         return $createdCompanyId['id'];
     }
+
+    public function updateCompanyData(int $companyId, CompanyCommand $companyCommand): void
+    {
+        $statement = $this->db->prepare(<<<SQL
+            UPDATE 
+                company
+            SET 
+                "name" = :name,
+                vat_identification_number = :vat_identification_number,
+                address = :address,
+                city = :city,
+                zip_code = :zip_code
+            WHERE
+                id = :companyId
+        SQL);
+
+        $statement->execute([
+            'companyId' => $companyId,
+            'name' => $companyCommand->getName(),
+            'vat_identification_number' => $companyCommand->getVatIdentificationNumber(),
+            'address' => $companyCommand->getAddress(),
+            'city' => $companyCommand->getCity(),
+            'zip_code' => $companyCommand->getZipCode()
+        ]);
+
+        $statement->fetch(PDO::FETCH_ASSOC);
+    }
 }

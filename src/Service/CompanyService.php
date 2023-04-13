@@ -31,4 +31,9 @@ class CompanyService
     {
          return $this->companyRepository->createCompanyData($companyCommand);
     }
+
+    public function updateCompany(int $companyId, CompanyCommand $companyCommand): void
+    {
+        $this->companyRepository->updateCompanyData($companyId, $companyCommand);
+    }
 }
