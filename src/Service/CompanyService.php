@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Command\CompanyCommand;
+use App\Command\CreateCompanyCommand;
+use App\Command\UpdateCompanyCommand;
 use App\DTO\CompanyDTO;
 use App\Repository\CompanyRepository;
 
@@ -27,13 +28,13 @@ class CompanyService
         return $this->companyRepository->getCompaniesData();
     }
 
-    public function createCompany(CompanyCommand $companyCommand): int
+    public function createCompany(CreateCompanyCommand $createCompanyCommand): int
     {
-         return $this->companyRepository->createCompanyData($companyCommand);
+         return $this->companyRepository->createCompanyData($createCompanyCommand);
     }
 
-    public function updateCompany(int $companyId, CompanyCommand $companyCommand): void
+    public function updateCompany(UpdateCompanyCommand $updateCompanyCommand): void
     {
-        $this->companyRepository->updateCompanyData($companyId, $companyCommand);
+        $this->companyRepository->updateCompanyData($updateCompanyCommand);
     }
 }

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Command\Factory;
 
-use App\Command\CompanyCommand;
+use App\Command\CreateCompanyCommand;
 
-class CompanyCommandFactory
+class CreateCompanyCommandFactory
 {
-    public static function createCommandFromRequestData(array $companyData): CompanyCommand
+    public static function createCommandFromRequestData(array $companyData): CreateCompanyCommand
     {
-        return new CompanyCommand(
+        return new CreateCompanyCommand(
             $companyData['name'],
             $companyData['vat_identification_number'],
             $companyData['address'],

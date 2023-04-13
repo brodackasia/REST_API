@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Command\CompanyCommand;
+use App\Command\CreateCompanyCommand;
+use App\Command\UpdateCompanyCommand;
 use App\Database\Connection;
 use App\DTO\CompanyDTO;
 use App\DTO\Factory\CompanyDTOFactory;
@@ -65,7 +66,7 @@ class CompanyRepository
         );
     }
 
-    public function createCompanyData(CompanyCommand $companyCommand): int
+    public function createCompanyData(CreateCompanyCommand $companyCommand): int
     {
         $statement = $this->db->prepare(<<<SQL
             INSERT INTO 
@@ -89,7 +90,7 @@ class CompanyRepository
         return $createdCompanyId['id'];
     }
 
-    public function updateCompanyData(int $companyId, CompanyCommand $companyCommand): void
+    public function updateCompanyData(UpdateCompanyCommand $updateCompanyCommand): void
     {
         $statement = $this->db->prepare(<<<SQL
             UPDATE 
@@ -105,12 +106,12 @@ class CompanyRepository
         SQL);
 
         $statement->execute([
-            'companyId' => $companyId,
-            'name' => $companyCommand->getName(),
-            'vat_identification_number' => $companyCommand->getVatIdentificationNumber(),
-            'address' => $companyCommand->getAddress(),
-            'city' => $companyCommand->getCity(),
-            'zip_code' => $companyCommand->getZipCode()
+            'name' => $updateCompanyCommand->getName(),
+            'vat_identification_number' => $updateCompanyCommand->getVatIdentificationNumber(),
+            'address' => $updateCompanyCommand->getAddress(),
+            'city' => $updateCompanyCommand->getCity(),
+            'zip_code' => $updateCompanyCommand->getZipCode(),
+            'companyId' => $updateCompanyCommand->getCompanyId()
         ]);
 
         $statement->fetch(PDO::FETCH_ASSOC);
