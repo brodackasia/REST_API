@@ -44,7 +44,7 @@ class EmployeeController extends AbstractController
         return new JsonResponse(
             [
                 'employeeId' => $this->employeeService->createEmployee(
-                    EmployeeCommandFactory::createCommandFromArray(
+                    EmployeeCommandFactory::createFromRequest(
                         $request->request->all()
                     )
                 )

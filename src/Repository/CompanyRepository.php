@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Command\CompanyCommand;
+use App\Command\CreateCompanyCommand;
+use App\Command\UpdateCompanyCommand;
 use App\Database\Connection;
 use App\DTO\CompanyDTO;
 use App\DTO\Factory\CompanyDTOFactory;
@@ -65,27 +66,54 @@ class CompanyRepository
         );
     }
 
-    public function createCompanyData(CompanyCommand $companyCommand): int
+    public function createCompanyData(CreateCompanyCommand $companyCommand): int
     {
         $statement = $this->db->prepare(<<<SQL
             INSERT INTO 
                 company ("name", vat_identification_number, address, city, zip_code)
             VALUES 
-                (:name, :vat_identification_number, :address, :city, :zip_code)
+                (:name, :vatIdentificationNumber, :address, :city, :zipCode)
             RETURNING 
                 id 
         SQL);
 
         $statement->execute([
             'name' => $companyCommand->getName(),
-            'vat_identification_number' => $companyCommand->getVatIdentificationNumber(),
+            'vatIdentificationNumber' => $companyCommand->getVatIdentificationNumber(),
             'address' => $companyCommand->getAddress(),
             'city' => $companyCommand->getCity(),
-            'zip_code' => $companyCommand->getZipCode()
+            'zipCode' => $companyCommand->getZipCode(),
         ]);
 
         $createdCompanyId = $statement->fetch(PDO::FETCH_ASSOC);
 
         return $createdCompanyId['id'];
+    }
+
+    public function updateCompanyData(UpdateCompanyCommand $updateCompanyCommand): void
+    {
+        $statement = $this->db->prepare(<<<SQL
+            UPDATE 
+                company
+            SET 
+                "name" = :name,
+                vat_identification_number = :vatIdentificationNumber,
+                address = :address,
+                city = :city,
+                zip_code = :zipCode
+            WHERE
+                id = :companyId
+        SQL);
+
+        $statement->execute([
+            'name' => $updateCompanyCommand->getName(),
+            'vatIdentificationNumber' => $updateCompanyCommand->getVatIdentificationNumber(),
+            'address' => $updateCompanyCommand->getAddress(),
+            'city' => $updateCompanyCommand->getCity(),
+            'zipCode' => $updateCompanyCommand->getZipCode(),
+            'companyId' => $updateCompanyCommand->getCompanyId(),
+        ]);
+
+        $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
