@@ -35,7 +35,7 @@ class EmployeeRepository
         SQL);
 
         $statement->execute([
-            'employeeId' => $employeeId
+            'employeeId' => $employeeId,
         ]);
 
         return EmployeeDTOFactory::createFromArray(
@@ -69,7 +69,7 @@ class EmployeeRepository
            INSERT INTO 
                employee ("name", surname, email, phone_number) 
            VALUES 
-               (:name, :surname, :email, :phone_number)
+               (:name, :surname, :email, :phoneNumber)
            RETURNING 
                id
         SQL);
@@ -78,7 +78,7 @@ class EmployeeRepository
             'name' => $employeeCommand->getName(),
             'surname' => $employeeCommand->getSurname(),
             'email' => $employeeCommand->getEmail(),
-            'phone_number' => $employeeCommand->getPhoneNumber()
+            'phoneNumber' => $employeeCommand->getPhoneNumber()
         ]);
 
         $createdEmployeeId = $statement->fetch(PDO::FETCH_ASSOC);

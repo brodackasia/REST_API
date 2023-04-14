@@ -15,7 +15,7 @@ class CreateCompanyCommandFactory
             $companyData['vat_identification_number'],
             $companyData['address'],
             $companyData['city'],
-            $companyData['zip_code']
+            $companyData['zip_code'],
         );
     }
 }

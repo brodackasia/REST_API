@@ -23,16 +23,16 @@ class CompanyDTO implements JsonSerializable
     public function __construct(
         int $companyId,
         string $companyName,
+        string $companyVatIdentificationNumber,
         string $companyAddress,
         string $companyCity,
-        string $companyVatIdentificationNumber,
         string $companyZipCode
     ) {
         $this->companyId = $companyId;
         $this->companyName = $companyName;
+        $this->companyVatIdentificationNumber = $companyVatIdentificationNumber;
         $this->companyAddress = $companyAddress;
         $this->companyCity = $companyCity;
-        $this->companyVatIdentificationNumber = $companyVatIdentificationNumber;
         $this->companyZipCode = $companyZipCode;
     }
 
