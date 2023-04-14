@@ -54,6 +54,8 @@ class EmployeeRepository
                 e.phone_number
             FROM 
                 employee AS e
+            ORDER BY 
+                e.id
         SQL);
 
         $statement->execute();
