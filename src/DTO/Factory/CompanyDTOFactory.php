@@ -16,7 +16,7 @@ class CompanyDTOFactory
             $data['vat_identification_number'],
             $data['address'],
             $data['city'],
-            $data['zip_code']
+            $data['zip_code'],
         );
     }
 

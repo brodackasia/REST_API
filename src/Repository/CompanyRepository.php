@@ -37,7 +37,7 @@ class CompanyRepository
         SQL);
 
         $statement->execute([
-            'companyId' => $companyId
+            'companyId' => $companyId,
         ]);
 
         return CompanyDTOFactory::createFromArray(
