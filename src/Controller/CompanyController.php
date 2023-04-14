@@ -56,7 +56,6 @@ class CompanyController extends AbstractController
     #[Route('/company/{companyId}', name: 'update_company', methods: 'PUT')]
     public function updateCompany(Request $request): JsonResponse
     {
-
         $this->companyService->updateCompany(
             UpdateCompanyCommandFactory::createFromRequest(
                 $request->request->all()
