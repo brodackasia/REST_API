@@ -12,9 +12,9 @@ class UpdateCompanyCommandFactory
     {
         return (new UpdateCompanyCommand())
             ->setName($companyData['name'])
-            ->setVatIdentificationNumber($companyData['vatIdentificationNumber'])
+            ->setVatIdentificationNumber($companyData['vat_identification_number'])
             ->setAddress($companyData['address'])
             ->setCity($companyData['city'])
-            ->setZipCode($companyData['zipCode']);
+            ->setZipCode($companyData['zip_code']);
     }
 }
