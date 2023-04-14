@@ -8,14 +8,14 @@ use App\Command\CreateCompanyCommand;
 
 class CreateCompanyCommandFactory
 {
-    public static function createCommandFromRequestData(array $companyData): CreateCompanyCommand
+    public static function createFromRequest(array $companyData): CreateCompanyCommand
     {
         return new CreateCompanyCommand(
             $companyData['name'],
-            $companyData['vat_identification_number'],
+            $companyData['vatIdentificationNumber'],
             $companyData['address'],
             $companyData['city'],
-            $companyData['zip_code']
+            $companyData['zipCode']
         );
     }
 }

@@ -8,15 +8,13 @@ use App\Command\UpdateCompanyCommand;
 
 class UpdateCompanyCommandFactory
 {
-    public static function updateCommandFromRequestData(array $companyData): UpdateCompanyCommand
+    public static function createFromRequest(array $companyData): UpdateCompanyCommand
     {
-        return (
-            new UpdateCompanyCommand()
-        )
+        return (new UpdateCompanyCommand())
             ->setName($companyData['name'])
-            ->setVatIdentificationNumber($companyData['vat_identification_number'])
+            ->setVatIdentificationNumber($companyData['vatIdentificationNumber'])
             ->setAddress($companyData['address'])
             ->setCity($companyData['city'])
-            ->setZipCode($companyData['zip_code']);
+            ->setZipCode($companyData['zipCode']);
     }
 }

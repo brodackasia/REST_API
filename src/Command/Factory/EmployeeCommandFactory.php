@@ -8,13 +8,13 @@ use App\Command\EmployeeCommand;
 
 class EmployeeCommandFactory
 {
-    public static function createCommandFromArray(array $employeeData): EmployeeCommand
+    public static function createFromRequest(array $employeeData): EmployeeCommand
     {
         return new EmployeeCommand(
             $employeeData['name'],
             $employeeData['surname'],
             $employeeData['email'],
-            $employeeData['phone_number'],
+            $employeeData['phoneNumber'],
         );
     }
 }

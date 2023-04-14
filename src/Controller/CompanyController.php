@@ -44,7 +44,7 @@ class CompanyController extends AbstractController
         return new JsonResponse(
             [
                 'companyId' => $this->companyService->createCompany(
-                    CreateCompanyCommandFactory::createCommandFromRequestData(
+                    CreateCompanyCommandFactory::createFromRequest(
                         $request->request->all()
                     )
                 )
@@ -58,10 +58,9 @@ class CompanyController extends AbstractController
     {
 
         $this->companyService->updateCompany(
-            UpdateCompanyCommandFactory::updateCommandFromRequestData(
+            UpdateCompanyCommandFactory::createFromRequest(
                 $request->request->all()
-            )
-            ->setCompanyId(
+            )->setCompanyId(
                 $request->get('companyId')
             )
         );
