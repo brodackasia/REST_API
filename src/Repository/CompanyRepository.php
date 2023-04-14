@@ -57,6 +57,8 @@ class CompanyRepository
                 c.zip_code            
             FROM 
                 company AS c
+            ORDER BY 
+                c.id 
         SQL);
 
         $statement->execute();
