@@ -115,7 +115,5 @@ class CompanyRepository
             'zipCode' => $updateCompanyCommand->getZipCode(),
             'companyId' => $updateCompanyCommand->getCompanyId(),
         ]);
-
-        $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
