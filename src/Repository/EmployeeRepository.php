@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Command\EmployeeCommand;
+use App\Command\CreateEmployeeCommand;
+use App\Command\UpdateEmployeeCommand;
 use App\Database\Connection;
 use App\DTO\EmployeeDTO;
 use App\DTO\Factory\EmployeeDTOFactory;
@@ -65,7 +66,7 @@ class EmployeeRepository
         );
     }
 
-    public function createEmployeeData(EmployeeCommand $employeeCommand): int
+    public function createEmployeeData(CreateEmployeeCommand $createEmployeeCommand): int
     {
         $statement = $this->db->prepare(<<<SQL
            INSERT INTO 
@@ -77,14 +78,37 @@ class EmployeeRepository
         SQL);
 
         $statement->execute([
-            'name' => $employeeCommand->getName(),
-            'surname' => $employeeCommand->getSurname(),
-            'email' => $employeeCommand->getEmail(),
-            'phoneNumber' => $employeeCommand->getPhoneNumber()
+            'name' => $createEmployeeCommand->getName(),
+            'surname' => $createEmployeeCommand->getSurname(),
+            'email' => $createEmployeeCommand->getEmail(),
+            'phoneNumber' => $createEmployeeCommand->getPhoneNumber(),
         ]);
 
         $createdEmployeeId = $statement->fetch(PDO::FETCH_ASSOC);
 
         return $createdEmployeeId ['id'];
+    }
+
+    public function updateEmployeeData(UpdateEmployeeCommand $updateEmployeeCommand): void
+    {
+        $statement = $this->db->prepare(<<<SQL
+             UPDATE 
+                employee
+             SET 
+                "name" = :name,
+                surname = :surname,
+                email = :email,
+                phone_number = :phoneNumber
+             WHERE 
+                 id = :employeeId
+        SQL);
+
+        $statement->execute([
+            'name' => $updateEmployeeCommand->getName(),
+            'surname' => $updateEmployeeCommand->getSurname(),
+            'email' => $updateEmployeeCommand->getEmail(),
+            'phoneNumber' => $updateEmployeeCommand->getPhoneNumber(),
+            'employeeId' => $updateEmployeeCommand->getEmployeeId(),
+        ]);
     }
 }

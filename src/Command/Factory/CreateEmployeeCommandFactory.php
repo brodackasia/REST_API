@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Command\Factory;
 
-use App\Command\EmployeeCommand;
+use App\Command\CreateEmployeeCommand;
 
-class EmployeeCommandFactory
+class CreateEmployeeCommandFactory
 {
-    public static function createFromRequest(array $employeeData): EmployeeCommand
+    public static function createFromRequest(array $employeeData): CreateEmployeeCommand
     {
-        return new EmployeeCommand(
+        return new CreateEmployeeCommand(
             $employeeData['name'],
             $employeeData['surname'],
             $employeeData['email'],

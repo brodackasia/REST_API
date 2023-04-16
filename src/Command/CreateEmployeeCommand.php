@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-class EmployeeCommand
+class CreateEmployeeCommand
 {
     private string $name;
 
