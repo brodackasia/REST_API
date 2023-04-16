@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Command\EmployeeCommand;
+use App\Command\CreateEmployeeCommand;
+use App\Command\UpdateEmployeeCommand;
 use App\DTO\EmployeeDTO;
 use App\Repository\EmployeeRepository;
 
@@ -27,8 +28,13 @@ class EmployeeService
         return $this->employeeRepository->getEmployeesData();
     }
 
-    public function createEmployee(EmployeeCommand $employeeCommand): int
+    public function createEmployee(CreateEmployeeCommand $createEmployeeCommand): int
     {
-        return $this->employeeRepository->createEmployeeData($employeeCommand);
+        return $this->employeeRepository->createEmployeeData($createEmployeeCommand);
+    }
+
+    public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): void
+    {
+        $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
 }

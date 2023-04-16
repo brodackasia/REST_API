@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Command\Factory\EmployeeCommandFactory;
+use App\Command\Factory\CreateEmployeeCommandFactory;
+use App\Command\Factory\UpdateEmployeeCommandFactory;
 use App\Service\EmployeeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -43,12 +44,28 @@ class EmployeeController extends AbstractController
         return new JsonResponse(
             [
                 'employeeId' => $this->employeeService->createEmployee(
-                    EmployeeCommandFactory::createFromRequest(
+                    CreateEmployeeCommandFactory::createFromRequest(
                         $request->request->all()
                     )
                 )
             ],
             Response::HTTP_CREATED
+        );
+    }
+
+    #[Route('/employee/{employeeId}', name: 'update_employee', methods: 'PUT')]
+    public function updateEmployee(Request $request): JsonResponse
+    {
+        $this->employeeService->updateEmployee(
+            UpdateEmployeeCommandFactory::createFromArray(
+                $request->request->all()
+            )->setEmployeeId(
+                $request->get('employeeId')
+            )
+        );
+
+        return new JsonResponse(
+            Response::HTTP_NO_CONTENT
         );
     }
 }

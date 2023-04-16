@@ -68,7 +68,7 @@ class CompanyRepository
         );
     }
 
-    public function createCompanyData(CreateCompanyCommand $companyCommand): int
+    public function createCompanyData(CreateCompanyCommand $createCompanyCommand): int
     {
         $statement = $this->db->prepare(<<<SQL
             INSERT INTO 
@@ -80,11 +80,11 @@ class CompanyRepository
         SQL);
 
         $statement->execute([
-            'name' => $companyCommand->getName(),
-            'vatIdentificationNumber' => $companyCommand->getVatIdentificationNumber(),
-            'address' => $companyCommand->getAddress(),
-            'city' => $companyCommand->getCity(),
-            'zipCode' => $companyCommand->getZipCode(),
+            'name' => $createCompanyCommand->getName(),
+            'vatIdentificationNumber' => $createCompanyCommand->getVatIdentificationNumber(),
+            'address' => $createCompanyCommand->getAddress(),
+            'city' => $createCompanyCommand->getCity(),
+            'zipCode' => $createCompanyCommand->getZipCode(),
         ]);
 
         $createdCompanyId = $statement->fetch(PDO::FETCH_ASSOC);
