@@ -37,4 +37,9 @@ class CompanyService
     {
         $this->companyRepository->updateCompanyData($updateCompanyCommand);
     }
+
+    public function deleteCompany(int $companyId): void
+    {
+        $this->companyRepository->deleteCompanyData($companyId);
+    }
 }

@@ -68,4 +68,14 @@ class CompanyController extends AbstractController
             Response::HTTP_NO_CONTENT
         );
     }
+
+    #[Route('/company/{companyId}', name: 'delete_company', methods: 'DELETE')]
+    public function deleteCompany(int $companyId): JsonResponse
+    {
+        $this->companyService->deleteCompany($companyId);
+        
+        return new JsonResponse(
+            Response::HTTP_NO_CONTENT
+        );
+    }
 }
