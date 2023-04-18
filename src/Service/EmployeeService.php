@@ -37,4 +37,9 @@ class EmployeeService
     {
         $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
+
+    public function deleteEmployee(int $companyId): void
+    {
+        $this->employeeRepository->deleteEmployeeData($companyId);
+    }
 }

@@ -111,4 +111,18 @@ class EmployeeRepository
             'employeeId' => $updateEmployeeCommand->getEmployeeId(),
         ]);
     }
+
+    public function deleteEmployeeData(int $employeeId): void
+    {
+        $statement = $this->db->prepare(<<<SQL
+            DELETE FROM
+                employee
+            WHERE
+                employee.id = :employeeId
+        SQL);
+
+        $statement->execute([
+            'employeeId' => $employeeId
+        ]);
+    }
 }
