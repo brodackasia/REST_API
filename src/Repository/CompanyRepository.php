@@ -116,4 +116,18 @@ class CompanyRepository
             'companyId' => $updateCompanyCommand->getCompanyId(),
         ]);
     }
+
+    public function deleteCompanyData(int $companyId): void
+    {
+        $statement = $this->db->prepare(<<<SQL
+            DELETE FROM
+                company
+            WHERE 
+                company.id = :companyId
+        SQL);
+
+        $statement->execute([
+           'companyId' => $companyId
+        ]);
+    }
 }
