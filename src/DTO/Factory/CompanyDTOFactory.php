@@ -8,23 +8,25 @@ use App\DTO\CompanyDTO;
 
 class CompanyDTOFactory
 {
-    public static function createFromArray(array $data): CompanyDTO
+    public static function createFromArray(array $companyData): CompanyDTO
     {
         return new CompanyDTO(
-            $data['id'],
-            $data['name'],
-            $data['vat_identification_number'],
-            $data['address'],
-            $data['city'],
-            $data['zip_code'],
+            $companyData['id'],
+            $companyData['name'],
+            $companyData['vat_identification_number'],
+            $companyData['address'],
+            $companyData['city'],
+            $companyData['zip_code'],
+            $companyData['employee_id'],
         );
     }
 
-    public static function createCollectionFromArray(array $data): array
+
+    public static function createCollectionFromArray(array $companyData): array
     {
         $result = [];
 
-        foreach ($data as $collectionArray) {
+        foreach ($companyData as $collectionArray) {
             $result[] = CompanyDTOFactory::createFromArray($collectionArray);
         }
 

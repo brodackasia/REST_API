@@ -23,16 +23,25 @@ class EmployeeRepository
     public function getEmployeeData(int $employeeId): EmployeeDTO
     {
         $statement = $this->db->prepare(<<<SQL
-            SELECT 
+            SELECT
                 e.id,
                 e."name",
                 e.surname,
                 e.email,
-                e.phone_number
+                e.phone_number,
+                array_agg(c.id) AS company_id
             FROM
-                employee AS e
-            WHERE 
+                company_employee AS ce
+                INNER JOIN
+                    company AS c
+                        ON ce.company_id = c.id
+                INNER JOIN
+                    employee AS e
+                        ON e.id = ce.employee_id
+            WHERE
                 e.id = :employeeId
+            GROUP BY
+                e.id
         SQL);
 
         $statement->execute([
@@ -52,10 +61,17 @@ class EmployeeRepository
                 e."name",
                 e.surname,
                 e.email,
-                e.phone_number
-            FROM 
-                employee AS e
-            ORDER BY 
+                e.phone_number,
+                array_agg(c.id) AS company_id
+            FROM
+                company_employee AS ce
+                INNER JOIN
+                    company AS c
+                        ON ce.company_id = c.id
+                INNER JOIN
+                    employee AS e
+                        ON e.id = ce.employee_id
+            GROUP BY 
                 e.id
         SQL);
 
@@ -123,6 +139,21 @@ class EmployeeRepository
 
         $statement->execute([
             'employeeId' => $employeeId
+        ]);
+    }
+
+    public function assignEmployeeToCompany(int $employeeId, int $companyId): void
+    {
+        $statement = $this->db->prepare(<<<SQL
+            INSERT INTO
+                company_employee (employee_id, company_id)
+            VALUES
+                (:employeeId, :companyId) 
+        SQL);
+
+        $statement->execute([
+            'employeeId' => $employeeId,
+            'companyId' => $companyId,
         ]);
     }
 }

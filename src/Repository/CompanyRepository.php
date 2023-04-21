@@ -23,17 +23,26 @@ class CompanyRepository
     public function getCompanyData(int $companyId): CompanyDTO
     {
         $statement = $this->db->prepare(<<<SQL
-            SELECT 
-                c.id, 
-                c."name", 
-                c.vat_identification_number, 
-                c.address, 
-                c.city, 
-                c.zip_code
-            FROM 
-                company AS c
+            SELECT
+                c.id,
+                c."name",
+                c.vat_identification_number,
+                c.address,
+                c.city,
+                c.zip_code,
+                array_agg(e.id) AS employee_id
+            FROM
+                company_employee AS ce
+                INNER JOIN
+                    employee AS e
+                        ON ce.employee_id = e.id
+                INNER JOIN
+                    company AS c
+                        ON c.id = ce.company_id
             WHERE
                 c.id = :companyId
+            GROUP BY
+                c.id
         SQL);
 
         $statement->execute([
@@ -54,10 +63,17 @@ class CompanyRepository
                 c.vat_identification_number, 
                 c.address, 
                 c.city, 
-                c.zip_code            
-            FROM 
-                company AS c
-            ORDER BY 
+                c.zip_code,
+                array_agg(e.id) AS employee_id
+            FROM
+                company_employee AS ce
+                INNER JOIN
+                    employee AS e
+                        ON ce.employee_id = e.id
+                INNER JOIN
+                    company AS c
+                        ON c.id = ce.company_id
+            GROUP BY 
                 c.id 
         SQL);
 
