@@ -33,12 +33,10 @@ class CompanyRepository
                 array_agg(e.id) AS employee_id
             FROM
                 company_employee AS ce
-                INNER JOIN
-                    employee AS e
-                        ON ce.employee_id = e.id
-                INNER JOIN
-                    company AS c
-                        ON c.id = ce.company_id
+            INNER JOIN
+                employee AS e ON ce.employee_id = e.id
+            INNER JOIN
+                company AS c ON c.id = ce.company_id
             WHERE
                 c.id = :companyId
             GROUP BY
@@ -67,12 +65,10 @@ class CompanyRepository
                 array_agg(e.id) AS employee_id
             FROM
                 company_employee AS ce
-                INNER JOIN
-                    employee AS e
-                        ON ce.employee_id = e.id
-                INNER JOIN
-                    company AS c
-                        ON c.id = ce.company_id
+            INNER JOIN
+                employee AS e ON ce.employee_id = e.id
+            INNER JOIN
+                company AS c ON c.id = ce.company_id
             GROUP BY 
                 c.id 
         SQL);
