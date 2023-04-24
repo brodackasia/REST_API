@@ -29,7 +29,7 @@ class EmployeeRepository
                 e.surname,
                 e.email,
                 e.phone_number,
-                array_agg(c.id) AS company_id
+                array_agg(c.id) AS companies_ids
             FROM
                 company_employee AS ce
             INNER JOIN
@@ -60,7 +60,7 @@ class EmployeeRepository
                 e.surname,
                 e.email,
                 e.phone_number,
-                array_agg(c.id) AS company_id
+                array_agg(c.id) AS companies_ids
             FROM
                 company_employee AS ce
             INNER JOIN

@@ -30,7 +30,7 @@ class CompanyRepository
                 c.address,
                 c.city,
                 c.zip_code,
-                array_agg(e.id) AS employee_id
+                array_agg(e.id) AS employees_ids
             FROM
                 company_employee AS ce
             INNER JOIN
@@ -62,7 +62,7 @@ class CompanyRepository
                 c.address, 
                 c.city, 
                 c.zip_code,
-                array_agg(e.id) AS employee_id
+                array_agg(e.id) AS employees_ids
             FROM
                 company_employee AS ce
             INNER JOIN

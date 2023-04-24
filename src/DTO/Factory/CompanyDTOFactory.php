@@ -17,7 +17,7 @@ class CompanyDTOFactory
             $companyData['address'],
             $companyData['city'],
             $companyData['zip_code'],
-            $companyData['employee_id'],
+            $companyData['employees_ids'],
         );
     }
 

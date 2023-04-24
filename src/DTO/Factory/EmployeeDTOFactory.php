@@ -16,7 +16,7 @@ class EmployeeDTOFactory
             $employeeData['surname'],
             $employeeData['email'],
             $employeeData['phone_number'],
-            $employeeData['company_id'],
+            $employeeData['companies_ids'],
         );
     }
 

@@ -20,7 +20,7 @@ class CompanyDTO implements JsonSerializable
 
     private string $companyZipCode;
 
-    private string $employeeId;
+    private string $employeesIds;
 
     public function __construct(
         int $companyId,
@@ -29,7 +29,7 @@ class CompanyDTO implements JsonSerializable
         string $companyAddress,
         string $companyCity,
         string $companyZipCode,
-        string $employeeId
+        string $employeesIds
     ) {
         $this->companyId = $companyId;
         $this->companyName = $companyName;
@@ -37,7 +37,7 @@ class CompanyDTO implements JsonSerializable
         $this->companyAddress = $companyAddress;
         $this->companyCity = $companyCity;
         $this->companyZipCode = $companyZipCode;
-        $this->employeeId = $employeeId;
+        $this->employeesIds = $employeesIds;
     }
 
     public function getCompanyId(): int
@@ -70,9 +70,20 @@ class CompanyDTO implements JsonSerializable
         return $this->companyZipCode;
     }
 
-    public function getEmployeeId(): string
+    public function getEmployeesIds(): array
     {
-        return $this->employeeId;
+        return
+            array_map(
+                'intval',
+                explode(
+                    ',',
+                    str_replace(
+                        ['{', '}'],
+                        '',
+                        $this->employeesIds
+                    )
+                )
+            );
     }
 
     public function jsonSerialize(): array
@@ -84,7 +95,7 @@ class CompanyDTO implements JsonSerializable
             'companyAddress' => $this->getCompanyAddress(),
             'companyCity' => $this->getCompanyCity(),
             'companyZipCode' => $this->getCompanyZipCode(),
-            'employeeId' => $this->getEmployeeId(),
+            'employeesIds' => $this->getEmployeesIds(),
         ];
     }
 }
