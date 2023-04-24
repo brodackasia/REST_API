@@ -30,15 +30,13 @@ class CompanyRepository
                 c.address,
                 c.city,
                 c.zip_code,
-                array_agg(e.id) AS employees_ids
+                array_to_string(array_agg(ce.employee_id), ',') AS employees_ids
             FROM
-                company_employee AS ce
+                company AS c
             INNER JOIN
-                employee AS e ON ce.employee_id = e.id
-            INNER JOIN
-                company AS c ON c.id = ce.company_id
+                company_employee AS ce ON ce.company_id = c.id
             WHERE
-                c.id = :companyId
+                    c.id = :companyId
             GROUP BY
                 c.id
         SQL);
@@ -55,22 +53,20 @@ class CompanyRepository
     public function getCompaniesData(): array
     {
         $statement = $this->db->prepare(<<<SQL
-            SELECT 
-                c.id, 
-                c."name", 
-                c.vat_identification_number, 
-                c.address, 
-                c.city, 
+            SELECT
+                c.id,
+                c."name",
+                c.vat_identification_number,
+                c.address,
+                c.city,
                 c.zip_code,
-                array_agg(e.id) AS employees_ids
+                array_to_string(array_agg(ce.employee_id), ',') AS employees_ids
             FROM
-                company_employee AS ce
+                company AS c
             INNER JOIN
-                employee AS e ON ce.employee_id = e.id
-            INNER JOIN
-                company AS c ON c.id = ce.company_id
-            GROUP BY 
-                c.id 
+                company_employee AS ce ON ce.company_id = c.id
+            GROUP BY
+                c.id
         SQL);
 
         $statement->execute();

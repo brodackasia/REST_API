@@ -16,7 +16,13 @@ class EmployeeDTOFactory
             $employeeData['surname'],
             $employeeData['email'],
             $employeeData['phone_number'],
-            $employeeData['companies_ids'],
+            array_map(
+                'intval',
+                explode(
+                    ',',
+                    $employeeData['companies_ids']
+                )
+            ),
         );
     }
 

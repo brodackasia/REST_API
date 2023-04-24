@@ -17,10 +17,15 @@ class CompanyDTOFactory
             $companyData['address'],
             $companyData['city'],
             $companyData['zip_code'],
-            $companyData['employees_ids'],
+            array_map(
+                'intval',
+                explode(
+                    ',',
+                    $companyData['employees_ids']
+                )
+            ),
         );
     }
-
 
     public static function createCollectionFromArray(array $companyData): array
     {

@@ -79,7 +79,7 @@ class EmployeeController extends AbstractController
         );
     }
 
-    #[Route('/assign/{employeeId}/{companyId}', name: 'assign_employee', methods: 'POST')]
+    #[Route('/assign/{employeeId}/{companyId}', name: 'assign', methods: 'POST')]
     public function assignEmployee(int $employeeId, int $companyId): JsonResponse
     {
         $this->employeeService->assignEmployeeToCompany($employeeId, $companyId);

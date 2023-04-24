@@ -29,15 +29,13 @@ class EmployeeRepository
                 e.surname,
                 e.email,
                 e.phone_number,
-                array_agg(c.id) AS companies_ids
+                array_to_string(array_agg(ce.company_id), ',') AS companies_ids
             FROM
-                company_employee AS ce
+                employee AS e
             INNER JOIN
-                company AS c ON ce.company_id = c.id
-            INNER JOIN
-                employee AS e ON e.id = ce.employee_id
+                company_employee AS ce ON ce.employee_id = e.id
             WHERE
-                e.id = :employeeId
+                    e.id = :employeeId
             GROUP BY
                 e.id
         SQL);
@@ -54,20 +52,18 @@ class EmployeeRepository
     public function getEmployeesData(): array
     {
         $statement = $this->db->prepare(<<<SQL
-            SELECT 
+            SELECT
                 e.id,
                 e."name",
                 e.surname,
                 e.email,
                 e.phone_number,
-                array_agg(c.id) AS companies_ids
+                array_to_string(array_agg(ce.company_id), ',') AS companies_ids
             FROM
-                company_employee AS ce
+                employee AS e
             INNER JOIN
-                company AS c ON ce.company_id = c.id
-            INNER JOIN
-                employee AS e ON e.id = ce.employee_id
-            GROUP BY 
+                company_employee AS ce ON ce.employee_id = e.id
+            GROUP BY
                 e.id
         SQL);
 
