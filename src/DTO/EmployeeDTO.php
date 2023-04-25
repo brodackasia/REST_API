@@ -18,18 +18,22 @@ class EmployeeDTO implements JsonSerializable
 
     private string $phoneNumber;
 
+    private array $companiesIds;
+
     public function __construct(
         int $employeeId,
         string $name,
         string $surname,
         string $email,
-        string $phoneNumber
+        string $phoneNumber,
+        array $companiesIds
     ) {
         $this->employeeId = $employeeId;
         $this->name = $name;
         $this->surname = $surname;
         $this->email = $email;
         $this->phoneNumber = $phoneNumber;
+        $this->companiesIds = $companiesIds;
     }
 
     public function getEmployeeId(): int
@@ -57,6 +61,11 @@ class EmployeeDTO implements JsonSerializable
         return $this->phoneNumber;
     }
 
+    public function getCompaniesIds(): array
+    {
+        return $this->companiesIds;
+    }
+
     public function jsonSerialize(): array
     {
         return [
@@ -65,6 +74,7 @@ class EmployeeDTO implements JsonSerializable
             'employeeSurname' => $this->getSurname(),
             'employeeEmail' => $this->getEmail(),
             'employeePhoneNumber' => $this->getPhoneNumber(),
+            'companiesIds' => $this->getCompaniesIds(),
         ];
     }
 }

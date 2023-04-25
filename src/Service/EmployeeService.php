@@ -42,4 +42,9 @@ class EmployeeService
     {
         $this->employeeRepository->deleteEmployeeData($companyId);
     }
+
+    public function assignEmployeeToCompany(int $employeeId, int $companyId): void
+    {
+        $this->employeeRepository->assignEmployeeToCompany($employeeId, $companyId);
+    }
 }

@@ -8,22 +8,36 @@ use App\DTO\EmployeeDTO;
 
 class EmployeeDTOFactory
 {
-    public static function createFromArray(array $data): EmployeeDTO
+    public static function createFromArray(array $employeeData): EmployeeDTO
     {
         return new EmployeeDTO(
-            $data['id'],
-            $data['name'],
-            $data['surname'],
-            $data['email'],
-            $data['phone_number'],
+            $employeeData['id'],
+            $employeeData['name'],
+            $employeeData['surname'],
+            $employeeData['email'],
+            $employeeData['phone_number'],
+            EmployeeDTOFactory::convertCompaniesIds(
+                $employeeData['companies_ids']
+            ),
         );
     }
 
-    public static function createCollectionFromArray(array $data): array
+    public static function convertCompaniesIds(string $companiesIdsInString): array
+    {
+        return empty($companiesIdsInString) ? [] : array_map(
+            'intval',
+            explode(
+                ',',
+                $companiesIdsInString
+            )
+        );
+    }
+
+    public static function createCollectionFromArray(array $employeeData): array
     {
         $result = [];
 
-        foreach ($data as $collectionArray) {
+        foreach ($employeeData as $collectionArray) {
             $result[] = EmployeeDTOFactory::createFromArray($collectionArray);
         }
 

@@ -23,16 +23,21 @@ class EmployeeRepository
     public function getEmployeeData(int $employeeId): EmployeeDTO
     {
         $statement = $this->db->prepare(<<<SQL
-            SELECT 
+            SELECT
                 e.id,
                 e."name",
                 e.surname,
                 e.email,
-                e.phone_number
+                e.phone_number,
+                array_to_string(array_agg(ce.company_id), ',') AS companies_ids
             FROM
                 employee AS e
-            WHERE 
-                e.id = :employeeId
+            LEFT JOIN
+                company_employee AS ce ON ce.employee_id = e.id
+            WHERE
+                    e.id = :employeeId
+            GROUP BY
+                e.id
         SQL);
 
         $statement->execute([
@@ -47,15 +52,18 @@ class EmployeeRepository
     public function getEmployeesData(): array
     {
         $statement = $this->db->prepare(<<<SQL
-            SELECT 
+            SELECT
                 e.id,
                 e."name",
                 e.surname,
                 e.email,
-                e.phone_number
-            FROM 
+                e.phone_number,
+                array_to_string(array_agg(ce.company_id), ',') AS companies_ids
+            FROM
                 employee AS e
-            ORDER BY 
+            LEFT JOIN
+                company_employee AS ce ON ce.employee_id = e.id
+            GROUP BY
                 e.id
         SQL);
 
@@ -123,6 +131,21 @@ class EmployeeRepository
 
         $statement->execute([
             'employeeId' => $employeeId
+        ]);
+    }
+
+    public function assignEmployeeToCompany(int $employeeId, int $companyId): void
+    {
+        $statement = $this->db->prepare(<<<SQL
+            INSERT INTO
+                company_employee (employee_id, company_id)
+            VALUES
+                (:employeeId, :companyId) 
+        SQL);
+
+        $statement->execute([
+            'employeeId' => $employeeId,
+            'companyId' => $companyId,
         ]);
     }
 }
