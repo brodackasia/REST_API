@@ -32,7 +32,7 @@ class CompanyDTOFactory
                 $employeesIdsInString
             )
         );
-
+    }
 
     public static function createCollectionFromArray(array $companyData): array
     {
