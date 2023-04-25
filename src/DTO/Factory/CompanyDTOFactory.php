@@ -17,14 +17,25 @@ class CompanyDTOFactory
             $companyData['address'],
             $companyData['city'],
             $companyData['zip_code'],
-            array_map(
+            CompanyDTOFactory::convertEmployeesIds(
+                $companyData['employees_ids']
+            ),
+        );
+    }
+
+    public static function convertEmployeesIds(string $employeesIdsInString): ?array
+    {
+        if ($employeesIdsInString === "") {
+            return [];
+        } else {
+            return array_map(
                 'intval',
                 explode(
                     ',',
-                    $companyData['employees_ids']
+                    $employeesIdsInString
                 )
-            ),
-        );
+            );
+        }
     }
 
     public static function createCollectionFromArray(array $companyData): array

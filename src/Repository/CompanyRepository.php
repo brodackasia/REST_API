@@ -33,7 +33,7 @@ class CompanyRepository
                 array_to_string(array_agg(ce.employee_id), ',') AS employees_ids
             FROM
                 company AS c
-            INNER JOIN
+            LEFT JOIN
                 company_employee AS ce ON ce.company_id = c.id
             WHERE
                     c.id = :companyId
@@ -63,7 +63,7 @@ class CompanyRepository
                 array_to_string(array_agg(ce.employee_id), ',') AS employees_ids
             FROM
                 company AS c
-            INNER JOIN
+            LEFT JOIN
                 company_employee AS ce ON ce.company_id = c.id
             GROUP BY
                 c.id

@@ -16,16 +16,26 @@ class EmployeeDTOFactory
             $employeeData['surname'],
             $employeeData['email'],
             $employeeData['phone_number'],
-            array_map(
-                'intval',
-                explode(
-                    ',',
-                    $employeeData['companies_ids']
-                )
+            EmployeeDTOFactory::convertCompaniesIds(
+                $employeeData['companies_ids']
             ),
         );
     }
 
+    public static function convertCompaniesIds(string $companiesIdsInString): ?array
+    {
+        if($companiesIdsInString === "") {
+            return [];
+        } else {
+            return array_map(
+                'intval',
+                explode(
+                    ',',
+                    $companiesIdsInString
+                )
+            );
+        }
+    }
     public static function createCollectionFromArray(array $employeeData): array
     {
         $result = [];
