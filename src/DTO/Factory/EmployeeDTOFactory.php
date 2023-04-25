@@ -32,6 +32,7 @@ class EmployeeDTOFactory
             )
         );
     }
+
     public static function createCollectionFromArray(array $employeeData): array
     {
         $result = [];
