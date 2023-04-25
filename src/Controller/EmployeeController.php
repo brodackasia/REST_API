@@ -85,7 +85,7 @@ class EmployeeController extends AbstractController
         $this->employeeService->assignEmployeeToCompany($employeeId, $companyId);
 
         return new JsonResponse(
-            Response::HTTP_CREATED
+            Response::HTTP_NO_CONTENT
         );
     }
 }

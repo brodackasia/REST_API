@@ -22,19 +22,15 @@ class EmployeeDTOFactory
         );
     }
 
-    public static function convertCompaniesIds(string $companiesIdsInString): ?array
+    public static function convertCompaniesIds(string $companiesIdsInString): array
     {
-        if($companiesIdsInString === "") {
-            return [];
-        } else {
-            return array_map(
-                'intval',
-                explode(
-                    ',',
-                    $companiesIdsInString
-                )
-            );
-        }
+        return empty($companiesIdsInString) ? [] : array_map(
+            'intval',
+            explode(
+                ',',
+                $companiesIdsInString
+            )
+        );
     }
     public static function createCollectionFromArray(array $employeeData): array
     {

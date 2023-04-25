@@ -23,20 +23,16 @@ class CompanyDTOFactory
         );
     }
 
-    public static function convertEmployeesIds(string $employeesIdsInString): ?array
+    public static function convertEmployeesIds(string $employeesIdsInString): array
     {
-        if ($employeesIdsInString === "") {
-            return [];
-        } else {
-            return array_map(
-                'intval',
-                explode(
-                    ',',
-                    $employeesIdsInString
-                )
-            );
-        }
-    }
+        return empty($employeesIdsInString) ? [] : array_map(
+            'intval',
+            explode(
+                ',',
+                $employeesIdsInString
+            )
+        );
+
 
     public static function createCollectionFromArray(array $companyData): array
     {
