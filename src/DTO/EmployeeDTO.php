@@ -8,32 +8,14 @@ use JsonSerializable;
 
 class EmployeeDTO implements JsonSerializable
 {
-    private int $employeeId;
-
-    private string $name;
-
-    private string $surname;
-
-    private string $email;
-
-    private string $phoneNumber;
-
-    private array $companiesIds;
-
     public function __construct(
-        int $employeeId,
-        string $name,
-        string $surname,
-        string $email,
-        string $phoneNumber,
-        array $companiesIds
+        private readonly int $employeeId,
+        private readonly string $name,
+        private readonly string $surname,
+        private readonly string $email,
+        private readonly string $phoneNumber,
+        private readonly array $companiesIds
     ) {
-        $this->employeeId = $employeeId;
-        $this->name = $name;
-        $this->surname = $surname;
-        $this->email = $email;
-        $this->phoneNumber = $phoneNumber;
-        $this->companiesIds = $companiesIds;
     }
 
     public function getEmployeeId(): int

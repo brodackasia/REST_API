@@ -8,36 +8,15 @@ use JsonSerializable;
 
 class CompanyDTO implements JsonSerializable
 {
-    private int $companyId;
-
-    private string $companyName;
-
-    private string $companyVatIdentificationNumber;
-
-    private string $companyAddress;
-
-    private string $companyCity;
-
-    private string $companyZipCode;
-
-    private array $employeesIds;
-
     public function __construct(
-        int $companyId,
-        string $companyName,
-        string $companyVatIdentificationNumber,
-        string $companyAddress,
-        string $companyCity,
-        string $companyZipCode,
-        array $employeesIds
+        private readonly int $companyId,
+        private readonly string $companyName,
+        private readonly string $companyVatIdentificationNumber,
+        private readonly string $companyAddress,
+        private readonly string $companyCity,
+        private readonly string $companyZipCode,
+        private readonly array $employeesIds
     ) {
-        $this->companyId = $companyId;
-        $this->companyName = $companyName;
-        $this->companyVatIdentificationNumber = $companyVatIdentificationNumber;
-        $this->companyAddress = $companyAddress;
-        $this->companyCity = $companyCity;
-        $this->companyZipCode = $companyZipCode;
-        $this->employeesIds = $employeesIds;
     }
 
     public function getCompanyId(): int
