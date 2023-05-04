@@ -6,28 +6,13 @@ namespace App\Command;
 
 class CreateCompanyCommand
 {
-    private string $name;
-
-    private string $vatIdentificationNumber;
-
-    private string $address;
-
-    private string $city;
-
-    private string $zipCode;
-
     public function __construct(
-        string $name,
-        string $vatIdentificationNumber,
-        string $address,
-        string $city,
-        string $zipCode
+        private readonly string $name,
+        private readonly string $vatIdentificationNumber,
+        private readonly string $address,
+        private readonly string $city,
+        private readonly string $zipCode
     ) {
-        $this->name = $name;
-        $this->vatIdentificationNumber = $vatIdentificationNumber;
-        $this->address = $address;
-        $this->city = $city;
-        $this->zipCode = $zipCode;
     }
 
     public function getName(): string
