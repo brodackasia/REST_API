@@ -41,11 +41,12 @@ class CompanyController extends AbstractController
     #[Route('/company', name: 'create_company', methods: 'POST')]
     public function createCompany(Request $request): JsonResponse
     {
+
         return new JsonResponse(
             [
                 'companyId' => $this->companyService->createCompany(
                     CreateCompanyCommandFactory::createFromRequest(
-                        $request->request->all()
+                        json_decode($request->getContent(), true)
                     )
                 )
             ],
@@ -58,7 +59,7 @@ class CompanyController extends AbstractController
     {
         $this->companyService->updateCompany(
             UpdateCompanyCommandFactory::createFromRequest(
-                $request->request->all()
+                json_decode($request->getContent(), true)
             )->setCompanyId(
                 $request->get('companyId')
             )

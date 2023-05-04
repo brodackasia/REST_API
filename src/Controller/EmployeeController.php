@@ -45,7 +45,7 @@ class EmployeeController extends AbstractController
             [
                 'employeeId' => $this->employeeService->createEmployee(
                     CreateEmployeeCommandFactory::createFromRequest(
-                        $request->request->all()
+                        json_decode($request->getContent(), true)
                     )
                 )
             ],
@@ -58,7 +58,7 @@ class EmployeeController extends AbstractController
     {
         $this->employeeService->updateEmployee(
             UpdateEmployeeCommandFactory::createFromArray(
-                $request->request->all()
+                json_decode($request->getContent(), true)
             )->setEmployeeId(
                 $request->get('employeeId')
             )
