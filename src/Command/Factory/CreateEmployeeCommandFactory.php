@@ -14,7 +14,7 @@ class CreateEmployeeCommandFactory
             $employeeData['name'],
             $employeeData['surname'],
             $employeeData['email'],
-            $employeeData['phone_number'],
+            $employeeData['phone_number'] ?? null,
         );
     }
 }

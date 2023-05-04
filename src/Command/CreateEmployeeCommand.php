@@ -10,7 +10,7 @@ class CreateEmployeeCommand
         private readonly string $name,
         private readonly string $surname,
         private readonly string $email,
-        private readonly string $phone_number
+        private readonly ?string $phone_number
     ) {
     }
 
@@ -29,7 +29,7 @@ class CreateEmployeeCommand
         return $this->email;
     }
 
-    public function getPhoneNumber(): string
+    public function getPhoneNumber(): ?string
     {
         return $this->phone_number;
     }

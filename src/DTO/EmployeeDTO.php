@@ -13,7 +13,7 @@ class EmployeeDTO implements JsonSerializable
         private readonly string $name,
         private readonly string $surname,
         private readonly string $email,
-        private readonly string $phoneNumber,
+        private readonly ?string $phoneNumber,
         private readonly array $companiesIds
     ) {
     }
@@ -38,7 +38,7 @@ class EmployeeDTO implements JsonSerializable
         return $this->email;
     }
 
-    public function getPhoneNumber(): string
+    public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
     }

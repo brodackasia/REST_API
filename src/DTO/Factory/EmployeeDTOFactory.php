@@ -15,7 +15,9 @@ class EmployeeDTOFactory
             $employeeData['name'],
             $employeeData['surname'],
             $employeeData['email'],
-            $employeeData['phone_number'],
+            EmployeeDTOFactory::convertPhoneNumber(
+                $employeeData['phone_number']
+            ),
             EmployeeDTOFactory::convertCompaniesIds(
                 $employeeData['companies_ids']
             ),
@@ -31,6 +33,11 @@ class EmployeeDTOFactory
                 $companiesIdsInString
             )
         );
+    }
+
+    public static function convertPhoneNumber(?string $phoneNumberInString): string
+    {
+        return empty($phoneNumberInString) ? "" : $phoneNumberInString;
     }
 
     public static function createCollectionFromArray(array $employeeData): array
