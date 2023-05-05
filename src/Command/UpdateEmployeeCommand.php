@@ -12,7 +12,7 @@ class UpdateEmployeeCommand
 
     private string $email;
 
-    private string $phoneNumber;
+    private ?string $phoneNumber;
 
     private string $employeeId;
 
@@ -49,12 +49,12 @@ class UpdateEmployeeCommand
         return $this;
     }
 
-    public function getPhoneNumber(): string
+    public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
     }
 
-    public function setPhoneNumber(string $phoneNumber): UpdateEmployeeCommand
+    public function setPhoneNumber(?string $phoneNumber): UpdateEmployeeCommand
     {
         $this->phoneNumber = $phoneNumber;
         return $this;

@@ -15,7 +15,7 @@ class EmployeeDTOFactory
             $employeeData['name'],
             $employeeData['surname'],
             $employeeData['email'],
-            $employeeData['phone_number'],
+            $employeeData['phone_number'] ?? null,
             EmployeeDTOFactory::convertCompaniesIds(
                 $employeeData['companies_ids']
             ),

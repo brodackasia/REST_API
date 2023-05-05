@@ -14,6 +14,6 @@ class UpdateEmployeeCommandFactory
             ->setName($employeeData['name'])
             ->setSurname($employeeData['surname'])
             ->setEmail($employeeData['email'])
-            ->setPhoneNumber($employeeData['phone_number']);
+            ->setPhoneNumber($employeeData['phone_number'] ?? null);
     }
 }
