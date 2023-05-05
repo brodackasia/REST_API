@@ -4,7 +4,7 @@ Aplikacja służąca do zarządzania firmami i ich pracownikami.
 
 **Stack technologiczny**
 
-    PHP w wersji 8.1 
+    PHP w wersji 8.2
     Composer w wersji 2.2
     Symfony w wersji 5.5
     Baza danych PostgreSQL
