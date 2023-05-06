@@ -21,7 +21,7 @@ class CreateCompanyCommand
         string $vatIdentificationNumber,
         string $address,
         string $city,
-        string $zipCode
+        string $zipCode,
     ) {
         $this->name = $name;
         $this->vatIdentificationNumber = $vatIdentificationNumber;

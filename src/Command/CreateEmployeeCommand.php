@@ -10,7 +10,7 @@ readonly class CreateEmployeeCommand
         public string  $name,
         public string  $surname,
         public string  $email,
-        public ?string $phone_number
+        public ?string $phone_number,
     ) {
     }
 }
