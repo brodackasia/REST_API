@@ -16,7 +16,7 @@ class Validator
         $this->validator = $validator;
     }
 
-    public function validation(object $objectToValidate): ?string
+    public function validate(object $objectToValidate): ?string
     {
         $violationList = $this->validator->validate($objectToValidate);
 

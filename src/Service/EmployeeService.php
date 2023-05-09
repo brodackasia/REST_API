@@ -34,14 +34,14 @@ class EmployeeService
 
     public function createEmployee(CreateEmployeeCommand $createEmployeeCommand): int
     {
-        $this->validator->validation($createEmployeeCommand);
+        $this->validator->validate($createEmployeeCommand);
 
         return $this->employeeRepository->createEmployeeData($createEmployeeCommand);
     }
 
     public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): void
     {
-        $this->validator->validation($updateEmployeeCommand);
+        $this->validator->validate($updateEmployeeCommand);
 
         $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
