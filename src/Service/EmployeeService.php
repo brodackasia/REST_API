@@ -47,14 +47,27 @@ class EmployeeService
         $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
 
-    public function deleteEmployee(int $companyId): void
+    public function deleteEmployee(int $companyId): ?int
     {
-        $this->employeeRepository->deleteEmployeeData($companyId);
+        return $this->validateDeleteRequest($this->employeeRepository->deleteEmployeeData($companyId));
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
     {
         $this->employeeRepository->assignEmployeeToCompany($employeeId, $companyId);
+    }
+
+    private function validateDeleteRequest(?int $deletedEmployeeId): ?string
+    {
+        if (
+            !(isset($deletedEmployeeId))
+        ) {
+            throw new Exception(
+                'There is no record with the specified id in the database'
+            );
+        }
+
+        return null;
     }
 
     private function validatePostRequestParameters(CreateEmployeeCommand $createEmployeeCommand): ?string
