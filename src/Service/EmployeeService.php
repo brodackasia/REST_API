@@ -8,14 +8,18 @@ use App\Command\CreateEmployeeCommand;
 use App\Command\UpdateEmployeeCommand;
 use App\DTO\EmployeeDTO;
 use App\Repository\EmployeeRepository;
+use App\Validator\Validator;
 
 class EmployeeService
 {
     private EmployeeRepository $employeeRepository;
 
-    public function __construct(EmployeeRepository $employeeRepository)
+    private Validator $validator;
+
+    public function __construct(EmployeeRepository $employeeRepository, Validator $validator)
     {
         $this->employeeRepository = $employeeRepository;
+        $this->validator = $validator;
     }
 
     public function getEmployee(int $employeeId): EmployeeDTO
@@ -30,11 +34,15 @@ class EmployeeService
 
     public function createEmployee(CreateEmployeeCommand $createEmployeeCommand): int
     {
+        $this->validator->validate($createEmployeeCommand);
+
         return $this->employeeRepository->createEmployeeData($createEmployeeCommand);
     }
 
     public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): void
     {
+        $this->validator->validate($updateEmployeeCommand);
+
         $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
 
