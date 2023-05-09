@@ -8,16 +8,15 @@ use App\Command\CreateEmployeeCommand;
 use App\Command\UpdateEmployeeCommand;
 use App\DTO\EmployeeDTO;
 use App\Repository\EmployeeRepository;
-use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Validator\Validator;
 
 class EmployeeService
 {
     private EmployeeRepository $employeeRepository;
 
-    private ValidatorInterface $validator;
+    private Validator $validator;
 
-    public function __construct(EmployeeRepository $employeeRepository, ValidatorInterface $validator)
+    public function __construct(EmployeeRepository $employeeRepository, Validator $validator)
     {
         $this->employeeRepository = $employeeRepository;
         $this->validator = $validator;
@@ -35,14 +34,14 @@ class EmployeeService
 
     public function createEmployee(CreateEmployeeCommand $createEmployeeCommand): int
     {
-        $this->validatePostRequestParameters($createEmployeeCommand);
+        $this->validator->validation($createEmployeeCommand);
 
         return $this->employeeRepository->createEmployeeData($createEmployeeCommand);
     }
 
     public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): void
     {
-        $this->validatePutRequestParameters($updateEmployeeCommand);
+        $this->validator->validation($updateEmployeeCommand);
 
         $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
@@ -55,31 +54,5 @@ class EmployeeService
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
     {
         $this->employeeRepository->assignEmployeeToCompany($employeeId, $companyId);
-    }
-
-    private function validatePostRequestParameters(CreateEmployeeCommand $createEmployeeCommand): ?string
-    {
-        $violationList = $this->validator->validate($createEmployeeCommand);
-
-        if (count($violationList) > 0) {
-            throw new Exception(
-                $violationList[0]->getMessageTemplate()
-            );
-        }
-
-        return null;
-    }
-
-    private function validatePutRequestParameters(UpdateEmployeeCommand $updateEmployeeCommand): ?string
-    {
-        $violationList = $this->validator->validate($updateEmployeeCommand);
-
-        if (count($violationList) > 0) {
-            throw new Exception(
-                $violationList[0]->getMessageTemplate()
-            );
-        }
-
-        return null;
     }
 }
