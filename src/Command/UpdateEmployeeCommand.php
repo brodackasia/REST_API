@@ -4,14 +4,23 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class UpdateEmployeeCommand
 {
+    #[Assert\Regex(pattern: '/\d/', message: 'Your name cannot contain a number', match: false)]
+    #[Assert\NotBlank(message: 'Name should not be null')]
     private string $name;
 
+    #[Assert\Regex(pattern: '/\d/', message: 'Your surname cannot contain a number', match: false)]
+    #[Assert\NotBlank(message: 'Surname should not be null')]
     private string $surname;
 
-    private string $email;
+    #[Assert\NotBlank(message: 'Email should not be null')]
+    #[Assert\Email(message: 'The email is not a valid email')]
+    public string  $email;
 
+    #[Assert\Type(type: 'numeric', message: 'The phone number is not a valid number')]
     private ?string $phoneNumber;
 
     private string $employeeId;
