@@ -94,7 +94,7 @@ class EmployeeRepository
 
         $createdEmployeeId = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $createdEmployeeId ['id'];
+        return $createdEmployeeId['id'];
     }
 
     public function updateEmployeeData(UpdateEmployeeCommand $updateEmployeeCommand): ?int

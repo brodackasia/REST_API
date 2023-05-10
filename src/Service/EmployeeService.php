@@ -43,7 +43,7 @@ class EmployeeService
     {
         $this->validator->validate($updateEmployeeCommand);
 
-        return($this->employeeRepository->updateEmployeeData($updateEmployeeCommand));
+        return $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
 
     public function deleteEmployee(int $companyId): void
