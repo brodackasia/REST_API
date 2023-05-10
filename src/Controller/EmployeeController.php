@@ -72,10 +72,16 @@ class EmployeeController extends AbstractController
     #[Route('/employee/{employeeId}', name: 'delete_employee', methods: 'DELETE')]
     public function deleteEmployee(int $employeeId): JsonResponse
     {
-        $this->employeeService->deleteEmployee($employeeId);
+        if ($this->employeeService->deleteEmployee($employeeId)) {
+            return new JsonResponse(
+                Response::HTTP_NO_CONTENT,
+                204
+            );
+        }
 
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT
+            Response::HTTP_BAD_REQUEST,
+            400
         );
     }
 

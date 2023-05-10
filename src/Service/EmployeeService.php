@@ -8,16 +8,16 @@ use App\Command\CreateEmployeeCommand;
 use App\Command\UpdateEmployeeCommand;
 use App\DTO\EmployeeDTO;
 use App\Repository\EmployeeRepository;
+use App\Validator\Validator;
 use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EmployeeService
 {
     private EmployeeRepository $employeeRepository;
 
-    private ValidatorInterface $validator;
+    private Validator $validator;
 
-    public function __construct(EmployeeRepository $employeeRepository, ValidatorInterface $validator)
+    public function __construct(EmployeeRepository $employeeRepository, Validator $validator)
     {
         $this->employeeRepository = $employeeRepository;
         $this->validator = $validator;
@@ -35,64 +35,25 @@ class EmployeeService
 
     public function createEmployee(CreateEmployeeCommand $createEmployeeCommand): int
     {
-        $this->validatePostRequestParameters($createEmployeeCommand);
+        $this->validator->validate($createEmployeeCommand);
 
         return $this->employeeRepository->createEmployeeData($createEmployeeCommand);
     }
 
     public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): void
     {
-        $this->validatePutRequestParameters($updateEmployeeCommand);
+        $this->validator->validate($updateEmployeeCommand);
 
         $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
 
     public function deleteEmployee(int $companyId): ?int
     {
-        return $this->validateDeleteRequest($this->employeeRepository->deleteEmployeeData($companyId));
+        return $this->employeeRepository->deleteEmployeeData($companyId);
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
     {
         $this->employeeRepository->assignEmployeeToCompany($employeeId, $companyId);
-    }
-
-    private function validateDeleteRequest(?int $deletedEmployeeId): ?string
-    {
-        if (
-            !(isset($deletedEmployeeId))
-        ) {
-            throw new Exception(
-                'There is no record with the specified id in the database'
-            );
-        }
-
-        return null;
-    }
-
-    private function validatePostRequestParameters(CreateEmployeeCommand $createEmployeeCommand): ?string
-    {
-        $violationList = $this->validator->validate($createEmployeeCommand);
-
-        if (count($violationList) > 0) {
-            throw new Exception(
-                $violationList[0]->getMessageTemplate()
-            );
-        }
-
-        return null;
-    }
-
-    private function validatePutRequestParameters(UpdateEmployeeCommand $updateEmployeeCommand): ?string
-    {
-        $violationList = $this->validator->validate($updateEmployeeCommand);
-
-        if (count($violationList) > 0) {
-            throw new Exception(
-                $violationList[0]->getMessageTemplate()
-            );
-        }
-
-        return null;
     }
 }
