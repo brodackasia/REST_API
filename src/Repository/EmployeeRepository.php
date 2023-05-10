@@ -97,7 +97,7 @@ class EmployeeRepository
         return $createdEmployeeId['id'];
     }
 
-    public function updateEmployeeData(UpdateEmployeeCommand $updateEmployeeCommand): void
+    public function updateEmployeeData(UpdateEmployeeCommand $updateEmployeeCommand): ?int
     {
         $statement = $this->db->prepare(<<<SQL
              UPDATE 
@@ -109,6 +109,8 @@ class EmployeeRepository
                 phone_number = :phoneNumber
              WHERE 
                  id = :employeeId
+             RETURNING 
+                id;
         SQL);
 
         $statement->execute([
@@ -118,6 +120,10 @@ class EmployeeRepository
             'phoneNumber' => $updateEmployeeCommand->getPhoneNumber(),
             'employeeId' => $updateEmployeeCommand->getEmployeeId(),
         ]);
+
+        $updatedEmployeeData = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $updatedEmployeeData['id'] ?? null;
     }
 
     public function deleteEmployeeData(int $employeeId): ?int
