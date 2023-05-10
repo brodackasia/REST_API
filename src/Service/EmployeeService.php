@@ -9,6 +9,7 @@ use App\Command\UpdateEmployeeCommand;
 use App\DTO\EmployeeDTO;
 use App\Repository\EmployeeRepository;
 use App\Validator\Validator;
+use Exception;
 
 class EmployeeService
 {
@@ -46,9 +47,9 @@ class EmployeeService
         $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
 
-    public function deleteEmployee(int $companyId): void
+    public function deleteEmployee(int $companyId): ?int
     {
-        $this->employeeRepository->deleteEmployeeData($companyId);
+        return $this->employeeRepository->deleteEmployeeData($companyId);
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
