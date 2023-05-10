@@ -26,7 +26,7 @@ class CompanyController extends AbstractController
     public function getCompany(int $companyId): JsonResponse
     {
         return new JsonResponse(
-            $this->companyService->getCompany($companyId)
+            $this->companyService->getCompany($companyId),
         );
     }
 
@@ -34,7 +34,7 @@ class CompanyController extends AbstractController
     public function getCompanies(): JsonResponse
     {
         return new JsonResponse(
-            $this->companyService->getCompanies()
+            $this->companyService->getCompanies(),
         );
     }
 
@@ -66,7 +66,7 @@ class CompanyController extends AbstractController
         );
 
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT
+            status: Response::HTTP_NO_CONTENT
         );
     }
 
@@ -76,7 +76,7 @@ class CompanyController extends AbstractController
         $this->companyService->deleteCompany($companyId);
         
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT
+            status: Response::HTTP_NO_CONTENT
         );
     }
 }

@@ -126,18 +126,24 @@ class EmployeeRepository
         return $updatedEmployeeData['id'] ?? null;
     }
 
-    public function deleteEmployeeData(int $employeeId): void
+    public function deleteEmployeeData(int $employeeId): ?int
     {
         $statement = $this->db->prepare(<<<SQL
             DELETE FROM
                 employee
             WHERE
                 employee.id = :employeeId
+            RETURNING 
+                id
         SQL);
 
         $statement->execute([
             'employeeId' => $employeeId
         ]);
+
+        $deletedEmployeeId = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $deletedEmployeeId['id'] ?? null;
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void

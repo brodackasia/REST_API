@@ -57,7 +57,8 @@ class EmployeeController extends AbstractController
     public function updateEmployee(Request $request): JsonResponse
     {
         return new JsonResponse(
-            ($this->employeeService->updateEmployee(
+            'Employee id not exists',
+             ($this->employeeService->updateEmployee(
                 UpdateEmployeeCommandFactory::createFromArray(
                     json_decode($request->getContent(), true)
                 )->setEmployeeId(
@@ -70,10 +71,9 @@ class EmployeeController extends AbstractController
     #[Route('/employee/{employeeId}', name: 'delete_employee', methods: 'DELETE')]
     public function deleteEmployee(int $employeeId): JsonResponse
     {
-        $this->employeeService->deleteEmployee($employeeId);
-
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT
+            'Employee id not exists',
+            ($this->employeeService->deleteEmployee($employeeId)) ? 204 : 404,
         );
     }
 
@@ -83,7 +83,7 @@ class EmployeeController extends AbstractController
         $this->employeeService->assignEmployeeToCompany($employeeId, $companyId);
 
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT
+            status: Response::HTTP_NO_CONTENT
         );
     }
 }
