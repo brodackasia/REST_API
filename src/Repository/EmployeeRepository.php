@@ -94,7 +94,7 @@ class EmployeeRepository
 
         $createdEmployeeId = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $createdEmployeeId ['id'];
+        return $createdEmployeeId['id'];
     }
 
     public function updateEmployeeData(UpdateEmployeeCommand $updateEmployeeCommand): void
@@ -137,7 +137,7 @@ class EmployeeRepository
 
         $deletedEmployeeId = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $deletedEmployeeId ['id'] ?? null;
+        return $deletedEmployeeId['id'] ?? null;
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
