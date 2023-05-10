@@ -56,16 +56,22 @@ class EmployeeController extends AbstractController
     #[Route('/employee/{employeeId}', name: 'update_employee', methods: 'PUT')]
     public function updateEmployee(Request $request): JsonResponse
     {
-        $this->employeeService->updateEmployee(
+        if ($this->employeeService->updateEmployee(
             UpdateEmployeeCommandFactory::createFromArray(
                 json_decode($request->getContent(), true)
             )->setEmployeeId(
                 $request->get('employeeId')
             )
-        );
+        )) {
+            return new JsonResponse(
+                Response::HTTP_NO_CONTENT,
+                204
+            );
+        }
 
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT
+            Response::HTTP_BAD_REQUEST,
+            400
         );
     }
 

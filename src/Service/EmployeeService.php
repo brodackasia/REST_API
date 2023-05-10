@@ -39,11 +39,11 @@ class EmployeeService
         return $this->employeeRepository->createEmployeeData($createEmployeeCommand);
     }
 
-    public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): void
+    public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): ?int
     {
         $this->validator->validate($updateEmployeeCommand);
 
-        $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
+        return($this->employeeRepository->updateEmployeeData($updateEmployeeCommand));
     }
 
     public function deleteEmployee(int $companyId): void
