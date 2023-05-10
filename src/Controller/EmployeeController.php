@@ -65,7 +65,7 @@ class EmployeeController extends AbstractController
         );
 
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT
+            status: Response::HTTP_NO_CONTENT
         );
     }
 
@@ -73,7 +73,8 @@ class EmployeeController extends AbstractController
     public function deleteEmployee(int $employeeId): JsonResponse
     {
         return new JsonResponse(
-            ($this->employeeService->deleteEmployee($employeeId)) ? 204 : 404
+            'Employee id not exists',
+            ($this->employeeService->deleteEmployee($employeeId)) ? 204 : 404,
         );
     }
 
@@ -83,7 +84,7 @@ class EmployeeController extends AbstractController
         $this->employeeService->assignEmployeeToCompany($employeeId, $companyId);
 
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT
+            status: Response::HTTP_NO_CONTENT
         );
     }
 }
