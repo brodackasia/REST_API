@@ -27,7 +27,6 @@ class EmployeeController extends AbstractController
     {
         return new JsonResponse(
             $this->employeeService->getEmployee($employeeId),
-            200
         );
     }
 
@@ -36,7 +35,6 @@ class EmployeeController extends AbstractController
     {
         return new JsonResponse(
             $this->employeeService->getEmployees(),
-            200
         );
     }
 
@@ -51,7 +49,7 @@ class EmployeeController extends AbstractController
                     )
                 )
             ],
-            204
+            Response::HTTP_CREATED
         );
     }
 
@@ -67,8 +65,7 @@ class EmployeeController extends AbstractController
         );
 
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT,
-            204
+            status: Response::HTTP_NO_CONTENT
         );
     }
 
@@ -78,8 +75,7 @@ class EmployeeController extends AbstractController
         $this->employeeService->deleteEmployee($employeeId);
 
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT,
-            204
+            status: Response::HTTP_NO_CONTENT
         );
     }
 
@@ -89,8 +85,7 @@ class EmployeeController extends AbstractController
         $this->employeeService->assignEmployeeToCompany($employeeId, $companyId);
 
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT,
-            204
+            status: Response::HTTP_NO_CONTENT
         );
     }
 }

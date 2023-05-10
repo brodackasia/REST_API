@@ -27,7 +27,6 @@ class CompanyController extends AbstractController
     {
         return new JsonResponse(
             $this->companyService->getCompany($companyId),
-            200
         );
     }
 
@@ -36,7 +35,6 @@ class CompanyController extends AbstractController
     {
         return new JsonResponse(
             $this->companyService->getCompanies(),
-            200
         );
     }
 
@@ -52,7 +50,7 @@ class CompanyController extends AbstractController
                     )
                 )
             ],
-            201
+            Response::HTTP_CREATED
         );
     }
 
@@ -68,8 +66,7 @@ class CompanyController extends AbstractController
         );
 
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT,
-            204
+            status: Response::HTTP_NO_CONTENT
         );
     }
 
@@ -79,8 +76,7 @@ class CompanyController extends AbstractController
         $this->companyService->deleteCompany($companyId);
         
         return new JsonResponse(
-            Response::HTTP_NO_CONTENT,
-            204
+            status: Response::HTTP_NO_CONTENT
         );
     }
 }
