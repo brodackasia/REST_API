@@ -9,13 +9,13 @@ use JsonSerializable;
 readonly class CompanyDTO implements JsonSerializable
 {
     public function __construct(
-        public int    $companyId,
+        public int $companyId,
         public string $companyName,
         public string $companyVatIdentificationNumber,
         public string $companyAddress,
         public string $companyCity,
         public string $companyZipCode,
-        public array  $employeesIds
+        public array $employeesIds,
     ) {
     }
 
