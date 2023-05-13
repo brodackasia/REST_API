@@ -7,8 +7,6 @@ namespace App\Controller;
 use App\Command\Factory\CreateEmployeeCommandFactory;
 use App\Command\Factory\UpdateEmployeeCommandFactory;
 use App\Service\EmployeeService;
-use Exception;
-use PDOException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;

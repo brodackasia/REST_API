@@ -9,9 +9,7 @@ use App\Command\UpdateEmployeeCommand;
 use App\Database\Connection;
 use App\DTO\EmployeeDTO;
 use App\DTO\Factory\EmployeeDTOFactory;
-use Exception;
 use PDO;
-use PDOException;
 
 class EmployeeRepository
 {
