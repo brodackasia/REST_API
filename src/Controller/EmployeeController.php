@@ -10,6 +10,7 @@ use App\Service\EmployeeService;
 use Exception;
 use PDOException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,13 +83,16 @@ class EmployeeController extends AbstractController
     #[Route('/assign/{employeeId}/{companyId}', name: 'assign', methods: 'POST')]
     public function assignEmployee(int $employeeId, int $companyId): JsonResponse
     {
-        return $this->employeeService->assignEmployeeToCompany($employeeId, $companyId)
-            ? new JsonResponse(
-                $this->employeeService->assignEmployeeToCompany($employeeId, $companyId),
-                Response::HTTP_BAD_REQUEST
-            )
-            : new JsonResponse(
-                status: Response::HTTP_CREATED
+        try {
+            $this->employeeService->assignEmployeeToCompany($employeeId, $companyId);
+        } catch (BadRequestException $e) {
+            return new JsonResponse(
+                $e->getMessage()
             );
+        }
+
+        return new JsonResponse(
+            status: Response::HTTP_CREATED
+        );
     }
 }

@@ -9,6 +9,7 @@ use App\Command\UpdateEmployeeCommand;
 use App\DTO\EmployeeDTO;
 use App\Repository\EmployeeRepository;
 use App\Validator\Validator;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class EmployeeService
 {
@@ -51,20 +52,20 @@ class EmployeeService
         return $this->employeeRepository->deleteEmployeeData($companyId);
     }
 
-    public function assignEmployeeToCompany(int $employeeId, int $companyId): mixed
+    public function assignEmployeeToCompany(int $employeeId, int $companyId): ?array
     {
-        if(
+        if (
             !$this->employeeRepository->doesEmployeeExist($employeeId)
         ) {
-            return 'this employee not exists';
+            throw new BadRequestException('this employee not exists');
         } else if(
             !$this->employeeRepository->doesCompanyExists($companyId)
         ) {
-            return 'this company not exists';
+            throw new BadRequestException('this company not exists');
         } else if(
             $this->employeeRepository->doesEmployeeCompanyAssignmentExist($employeeId, $companyId)
         ) {
-            return 'this assignment already exists';
+            throw new BadRequestException('this assignment already exists');
         } else {
             return $this->employeeRepository->assignEmployeeToCompany($employeeId, $companyId);
         }

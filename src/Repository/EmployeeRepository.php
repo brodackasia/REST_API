@@ -196,8 +196,7 @@ class EmployeeRepository
                 c_e.company_id = :companyId
             AND
                 c_e.employee_id = :employeeId
-        SQL
-        );
+        SQL);
 
         $statement->execute([
             'companyId' => $companyId,
