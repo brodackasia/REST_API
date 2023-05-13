@@ -9,7 +9,6 @@ use JsonSerializable;
 readonly class EmployeeDTO implements JsonSerializable
 {
     public function __construct(
-
         public int $employeeId,
         public string $name,
         public string $surname,
