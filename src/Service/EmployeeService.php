@@ -9,7 +9,6 @@ use App\Command\UpdateEmployeeCommand;
 use App\DTO\EmployeeDTO;
 use App\Repository\EmployeeRepository;
 use App\Validator\Validator;
-use Exception;
 
 class EmployeeService
 {
@@ -52,8 +51,22 @@ class EmployeeService
         return $this->employeeRepository->deleteEmployeeData($companyId);
     }
 
-    public function assignEmployeeToCompany(int $employeeId, int $companyId): void
+    public function assignEmployeeToCompany(int $employeeId, int $companyId): mixed
     {
-        $this->employeeRepository->assignEmployeeToCompany($employeeId, $companyId);
+        if(
+            !$this->employeeRepository->checkEmployeeId($employeeId)
+        ) {
+            return 'this employee not exists';
+        } else if(
+            !$this->employeeRepository->checkCompanyId($companyId)
+        ) {
+            return 'this company not exists';
+        } else if(
+            $this->employeeRepository->checkCompanyEmployee($employeeId, $companyId)
+        ) {
+            return 'this assignment already exists';
+        } else {
+            return $this->employeeRepository->assignEmployeeToCompany($employeeId, $companyId);
+        }
     }
 }

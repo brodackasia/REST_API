@@ -9,7 +9,9 @@ use App\Command\UpdateEmployeeCommand;
 use App\Database\Connection;
 use App\DTO\EmployeeDTO;
 use App\DTO\Factory\EmployeeDTOFactory;
+use Exception;
 use PDO;
+use PDOException;
 
 class EmployeeRepository
 {
@@ -146,18 +148,81 @@ class EmployeeRepository
         return $deletedEmployeeId['id'] ?? null;
     }
 
-    public function assignEmployeeToCompany(int $employeeId, int $companyId): void
+    public function checkEmployeeId(int $employeeId): bool|array
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT 
+                e.id AS e_id
+            FROM 
+                employee AS e
+            WHERE 
+                e.id = :employeeId
+        SQL);
+
+        $statement->execute([
+            'employeeId' => $employeeId,
+        ]);
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function checkCompanyId(int $companyId): bool|array
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT 
+                c.id AS c_id
+            FROM 
+                company AS c
+            WHERE 
+                c.id = :companyId
+        SQL);
+
+        $statement->execute([
+            'companyId' => $companyId,
+        ]);
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function checkCompanyEmployee(int $employeeId, int $companyId): bool|array
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT 
+                c_e.company_id AS c_id,
+                c_e.employee_id AS e_id
+            FROM 
+                company_employee AS c_e
+            WHERE 
+                c_e.company_id = :companyId
+            AND
+                c_e.employee_id = :employeeId
+        SQL
+        );
+
+        $statement->execute([
+            'companyId' => $companyId,
+            'employeeId' => $employeeId
+        ]);
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function assignEmployeeToCompany(int $employeeId, int $companyId): ?array
     {
         $statement = $this->db->prepare(<<<SQL
             INSERT INTO
                 company_employee (employee_id, company_id)
             VALUES
                 (:employeeId, :companyId) 
+            RETURNING 
+                :employeeId
         SQL);
 
         $statement->execute([
             'employeeId' => $employeeId,
             'companyId' => $companyId,
         ]);
+
+        return null;
     }
 }

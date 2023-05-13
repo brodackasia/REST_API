@@ -7,6 +7,8 @@ namespace App\Controller;
 use App\Command\Factory\CreateEmployeeCommandFactory;
 use App\Command\Factory\UpdateEmployeeCommandFactory;
 use App\Service\EmployeeService;
+use Exception;
+use PDOException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +24,7 @@ class EmployeeController extends AbstractController
         $this->employeeService = $employeeService;
     }
 
-    #[Route('/employee/{employeeId}', name:'get_employee', methods: 'GET')]
+    #[Route('/employee/{employeeId}', name: 'get_employee', methods: 'GET')]
     public function getEmployee(int $employeeId): JsonResponse
     {
         return new JsonResponse(
@@ -58,7 +60,7 @@ class EmployeeController extends AbstractController
     {
         return new JsonResponse(
             'Employee id not exists',
-             ($this->employeeService->updateEmployee(
+            ($this->employeeService->updateEmployee(
                 UpdateEmployeeCommandFactory::createFromArray(
                     json_decode($request->getContent(), true)
                 )->setEmployeeId(
@@ -80,10 +82,13 @@ class EmployeeController extends AbstractController
     #[Route('/assign/{employeeId}/{companyId}', name: 'assign', methods: 'POST')]
     public function assignEmployee(int $employeeId, int $companyId): JsonResponse
     {
-        $this->employeeService->assignEmployeeToCompany($employeeId, $companyId);
-
-        return new JsonResponse(
-            status: Response::HTTP_NO_CONTENT
-        );
+        return $this->employeeService->assignEmployeeToCompany($employeeId, $companyId)
+            ? new JsonResponse(
+                $this->employeeService->assignEmployeeToCompany($employeeId, $companyId),
+                Response::HTTP_BAD_REQUEST
+            )
+            : new JsonResponse(
+                status: Response::HTTP_CREATED
+            );
     }
 }
