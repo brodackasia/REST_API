@@ -54,15 +54,15 @@ class EmployeeService
     public function assignEmployeeToCompany(int $employeeId, int $companyId): mixed
     {
         if(
-            !$this->employeeRepository->checkEmployeeId($employeeId)
+            !$this->employeeRepository->doesEmployeeExist($employeeId)
         ) {
             return 'this employee not exists';
         } else if(
-            !$this->employeeRepository->checkCompanyId($companyId)
+            !$this->employeeRepository->doesCompanyExists($companyId)
         ) {
             return 'this company not exists';
         } else if(
-            $this->employeeRepository->checkCompanyEmployee($employeeId, $companyId)
+            $this->employeeRepository->doesEmployeeCompanyAssignmentExist($employeeId, $companyId)
         ) {
             return 'this assignment already exists';
         } else {

@@ -148,7 +148,7 @@ class EmployeeRepository
         return $deletedEmployeeId['id'] ?? null;
     }
 
-    public function checkEmployeeId(int $employeeId): bool|array
+    public function doesEmployeeExist(int $employeeId): bool
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT 
@@ -163,10 +163,10 @@ class EmployeeRepository
             'employeeId' => $employeeId,
         ]);
 
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function checkCompanyId(int $companyId): bool|array
+    public function doesCompanyExists(int $companyId): bool
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT 
@@ -181,10 +181,10 @@ class EmployeeRepository
             'companyId' => $companyId,
         ]);
 
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function checkCompanyEmployee(int $employeeId, int $companyId): bool|array
+    public function doesEmployeeCompanyAssignmentExist(int $employeeId, int $companyId): bool
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT 
@@ -204,7 +204,7 @@ class EmployeeRepository
             'employeeId' => $employeeId
         ]);
 
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): ?array
