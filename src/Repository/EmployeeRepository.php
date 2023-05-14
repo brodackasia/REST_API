@@ -146,6 +146,63 @@ class EmployeeRepository
         return $deletedEmployeeId['id'] ?? null;
     }
 
+    public function doesEmployeeExist(int $employeeId): bool
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT 
+                1
+            FROM 
+                employee AS e
+            WHERE 
+                e.id = :employeeId
+        SQL);
+
+        $statement->execute([
+            'employeeId' => $employeeId,
+        ]);
+
+        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function doesCompanyExists(int $companyId): bool
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT 
+                1
+            FROM 
+                company AS c
+            WHERE 
+                c.id = :companyId
+        SQL);
+
+        $statement->execute([
+            'companyId' => $companyId,
+        ]);
+
+        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function doesEmployeeCompanyAssignmentExist(int $employeeId, int $companyId): bool
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT 
+                1
+            FROM 
+                company_employee AS c_e
+            WHERE 
+                c_e.company_id = :companyId
+            AND
+                c_e.employee_id = :employeeId
+        SQL);
+
+        $statement->execute([
+            'companyId' => $companyId,
+            'employeeId' => $employeeId
+        ]);
+
+        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
     {
         $statement = $this->db->prepare(<<<SQL

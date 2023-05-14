@@ -8,6 +8,7 @@ use App\Command\Factory\CreateEmployeeCommandFactory;
 use App\Command\Factory\UpdateEmployeeCommandFactory;
 use App\Service\EmployeeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,7 @@ class EmployeeController extends AbstractController
         $this->employeeService = $employeeService;
     }
 
-    #[Route('/employee/{employeeId}', name:'get_employee', methods: 'GET')]
+    #[Route('/employee/{employeeId}', name: 'get_employee', methods: 'GET')]
     public function getEmployee(int $employeeId): JsonResponse
     {
         return new JsonResponse(
@@ -57,8 +58,8 @@ class EmployeeController extends AbstractController
     public function updateEmployee(Request $request): JsonResponse
     {
         return new JsonResponse(
-            'Employee id not exists',
-             ($this->employeeService->updateEmployee(
+            ['message' => 'Employee id not exists'],
+            ($this->employeeService->updateEmployee(
                 UpdateEmployeeCommandFactory::createFromArray(
                     json_decode($request->getContent(), true)
                 )->setEmployeeId(
@@ -72,7 +73,7 @@ class EmployeeController extends AbstractController
     public function deleteEmployee(int $employeeId): JsonResponse
     {
         return new JsonResponse(
-            'Employee id not exists',
+            ['message' => 'Employee id not exists'],
             ($this->employeeService->deleteEmployee($employeeId)) ? 204 : 404,
         );
     }
@@ -80,10 +81,17 @@ class EmployeeController extends AbstractController
     #[Route('/assign/{employeeId}/{companyId}', name: 'assign', methods: 'POST')]
     public function assignEmployee(int $employeeId, int $companyId): JsonResponse
     {
-        $this->employeeService->assignEmployeeToCompany($employeeId, $companyId);
+        try {
+            $this->employeeService->assignEmployeeToCompany($employeeId, $companyId);
+        } catch (BadRequestException $e) {
+            return new JsonResponse(
+                ['message' => $e->getMessage()],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
         return new JsonResponse(
-            status: Response::HTTP_NO_CONTENT
+            status: Response::HTTP_CREATED
         );
     }
 }
