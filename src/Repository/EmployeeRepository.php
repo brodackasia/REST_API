@@ -150,7 +150,7 @@ class EmployeeRepository
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT 
-                e.id AS e_id
+                1
             FROM 
                 employee AS e
             WHERE 
@@ -168,7 +168,7 @@ class EmployeeRepository
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT 
-                c.id AS c_id
+                1
             FROM 
                 company AS c
             WHERE 
@@ -186,8 +186,7 @@ class EmployeeRepository
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT 
-                c_e.company_id AS c_id,
-                c_e.employee_id AS e_id
+                1
             FROM 
                 company_employee AS c_e
             WHERE 
@@ -204,22 +203,18 @@ class EmployeeRepository
         return (bool)$statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function assignEmployeeToCompany(int $employeeId, int $companyId): ?array
+    public function assignEmployeeToCompany(int $employeeId, int $companyId): void
     {
         $statement = $this->db->prepare(<<<SQL
             INSERT INTO
                 company_employee (employee_id, company_id)
             VALUES
                 (:employeeId, :companyId) 
-            RETURNING 
-                :employeeId
         SQL);
 
         $statement->execute([
             'employeeId' => $employeeId,
             'companyId' => $companyId,
         ]);
-
-        return null;
     }
 }

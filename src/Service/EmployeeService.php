@@ -52,7 +52,14 @@ class EmployeeService
         return $this->employeeRepository->deleteEmployeeData($companyId);
     }
 
-    public function assignEmployeeToCompany(int $employeeId, int $companyId): ?array
+    public function assignEmployeeToCompany(int $employeeId, int $companyId): void
+    {
+        $this->assignmentValidation($employeeId, $companyId);
+
+        $this->employeeRepository->assignEmployeeToCompany($employeeId, $companyId);
+    }
+
+    private function assignmentValidation(int $employeeId, int $companyId): void
     {
         if (
             !$this->employeeRepository->doesEmployeeExist($employeeId)
@@ -66,8 +73,6 @@ class EmployeeService
             $this->employeeRepository->doesEmployeeCompanyAssignmentExist($employeeId, $companyId)
         ) {
             throw new BadRequestException('this assignment already exists');
-        } else {
-            return $this->employeeRepository->assignEmployeeToCompany($employeeId, $companyId);
         }
     }
 }
