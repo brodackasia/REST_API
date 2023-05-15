@@ -26,7 +26,7 @@ class EmployeeService
     public function getEmployee(int $employeeId): ?EmployeeDTO
     {
         return $this->employeeRepository->getEmployeeData($employeeId)
-            ?: throw new BadRequestException(
+            ?? throw new BadRequestException(
                 'This employee id not exists!'
             );
     }
