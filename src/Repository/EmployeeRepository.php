@@ -145,6 +145,24 @@ class EmployeeRepository
         return (bool)$statement->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function isEmployeeAssigned($employeeId): bool
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT
+                1
+            FROM
+                company_employee AS c_e
+            WHERE
+                c_e.employee_id = :employeeId
+        SQL);
+
+        $statement->execute([
+            'employeeId' => $employeeId,
+        ]);
+
+        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function doesEmployeeExist(int $employeeId): bool
     {
         $statement = $this->db->prepare(<<<SQL

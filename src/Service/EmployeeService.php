@@ -58,17 +58,25 @@ class EmployeeService
         $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
 
-    public function deleteEmployee(int $companyId): void
+    public function deleteEmployee(int $employeeId): void
     {
+
+        if ($this->employeeRepository->isEmployeeAssigned($employeeId))
+        {
+            throw new BadRequestException(
+                'Cannot delete, employee assigned to company!'
+            );
+        }
+
         if (
-            !$this->employeeRepository->deleteEmployeeData($companyId)
+            !$this->employeeRepository->deleteEmployeeData($employeeId)
         ) {
             throw new BadRequestException(
                 'This employee id not exists!'
             );
         }
 
-        $this->employeeRepository->deleteEmployeeData($companyId);
+        $this->employeeRepository->deleteEmployeeData($employeeId);
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
