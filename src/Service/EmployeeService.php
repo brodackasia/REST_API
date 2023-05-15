@@ -54,15 +54,13 @@ class EmployeeService
         }
 
         $this->validator->validate($updateEmployeeCommand);
-
-        $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
 
     public function deleteEmployee(int $employeeId): void
     {
-
-        if ($this->employeeRepository->isEmployeeAssigned($employeeId))
-        {
+        if (
+            $this->employeeRepository->isEmployeeAssigned($employeeId)
+        ) {
             throw new BadRequestException(
                 'Cannot delete, employee assigned to company!'
             );
@@ -75,8 +73,6 @@ class EmployeeService
                 'This employee id not exists!'
             );
         }
-
-        $this->employeeRepository->deleteEmployeeData($employeeId);
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
@@ -84,6 +80,17 @@ class EmployeeService
         $this->assignmentValidation($employeeId, $companyId);
 
         $this->employeeRepository->assignEmployeeToCompany($employeeId, $companyId);
+    }
+
+    public function deleteEmployeeCompanyAssignment(int $employeeId, int $companyId): void
+    {
+        if (
+            !$this->employeeRepository->deleteEmployeeCompanyAssignment($employeeId, $companyId)
+        ) {
+            throw new BadRequestException(
+                'Assignment not exists!'
+            );
+        }
     }
 
     private function assignmentValidation(int $employeeId, int $companyId): void

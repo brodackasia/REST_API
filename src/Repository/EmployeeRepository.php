@@ -10,6 +10,7 @@ use App\Database\Connection;
 use App\DTO\EmployeeDTO;
 use App\DTO\Factory\EmployeeDTOFactory;
 use PDO;
+use function React\Promise\race;
 
 class EmployeeRepository
 {
@@ -233,5 +234,27 @@ class EmployeeRepository
             'employeeId' => $employeeId,
             'companyId' => $companyId,
         ]);
+    }
+
+    public function deleteEmployeeCompanyAssignment(int $employeeId, int $companyId): bool
+    {
+        $statement = $this->db->prepare(<<<SQL
+            DELETE FROM
+                company_employee AS c_e
+            WHERE 
+                c_e.employee_id = :employeeId
+            AND
+                c_e.company_id = :companyId
+            RETURNING 
+                c_e.employee_id,
+                c_e.company_id
+        SQL);
+
+        $statement->execute([
+            'employeeId' => $employeeId,
+            'companyId' => $companyId,
+        ]);
+
+        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
     }
 }
