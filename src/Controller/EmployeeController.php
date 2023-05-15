@@ -58,7 +58,7 @@ class EmployeeController extends AbstractController
     public function updateEmployee(Request $request): JsonResponse
     {
         return new JsonResponse(
-            ['message' => 'Employee id not exists'],
+            ['message' => 'Employee id not exists!'],
             ($this->employeeService->updateEmployee(
                 UpdateEmployeeCommandFactory::createFromArray(
                     json_decode($request->getContent(), true)
@@ -73,7 +73,7 @@ class EmployeeController extends AbstractController
     public function deleteEmployee(int $employeeId): JsonResponse
     {
         return new JsonResponse(
-            ['message' => 'Employee id not exists'],
+            ['message' => 'Employee id not exists!'],
             ($this->employeeService->deleteEmployee($employeeId)) ? 204 : 404,
         );
     }
@@ -83,9 +83,9 @@ class EmployeeController extends AbstractController
     {
         try {
             $this->employeeService->assignEmployeeToCompany($employeeId, $companyId);
-        } catch (BadRequestException $e) {
+        } catch (BadRequestException $exception) {
             return new JsonResponse(
-                ['message' => $e->getMessage()],
+                ['message' => $exception->getMessage()],
                 Response::HTTP_BAD_REQUEST
             );
         }

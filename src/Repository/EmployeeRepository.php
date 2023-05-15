@@ -101,14 +101,14 @@ class EmployeeRepository
     {
         $statement = $this->db->prepare(<<<SQL
              UPDATE 
-                employee
+                employee AS e
              SET 
                 "name" = :name,
                 surname = :surname,
                 email = :email,
                 phone_number = :phoneNumber
              WHERE 
-                 id = :employeeId
+                 e.id = :employeeId
              RETURNING 
                 id;
         SQL);
@@ -130,15 +130,15 @@ class EmployeeRepository
     {
         $statement = $this->db->prepare(<<<SQL
             DELETE FROM
-                employee
+                employee AS e
             WHERE
-                employee.id = :employeeId
+                e.id = :employeeId
             RETURNING 
                 id
         SQL);
 
         $statement->execute([
-            'employeeId' => $employeeId
+            'employeeId' => $employeeId,
         ]);
 
         $deletedEmployeeId = $statement->fetch(PDO::FETCH_ASSOC);
@@ -197,7 +197,7 @@ class EmployeeRepository
 
         $statement->execute([
             'companyId' => $companyId,
-            'employeeId' => $employeeId
+            'employeeId' => $employeeId,
         ]);
 
         return (bool)$statement->fetch(PDO::FETCH_ASSOC);
