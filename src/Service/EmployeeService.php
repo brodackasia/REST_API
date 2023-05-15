@@ -64,15 +64,15 @@ class EmployeeService
         if (
             !$this->employeeRepository->doesEmployeeExist($employeeId)
         ) {
-            throw new BadRequestException('this employee not exists');
+            throw new BadRequestException('This employee not exists!');
         } else if(
             !$this->employeeRepository->doesCompanyExists($companyId)
         ) {
-            throw new BadRequestException('this company not exists');
+            throw new BadRequestException('This company not exists!');
         } else if(
             $this->employeeRepository->doesEmployeeCompanyAssignmentExist($employeeId, $companyId)
         ) {
-            throw new BadRequestException('this assignment already exists');
+            throw new BadRequestException('This assignment already exists!');
         }
     }
 }
