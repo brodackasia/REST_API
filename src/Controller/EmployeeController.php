@@ -26,6 +26,15 @@ class EmployeeController extends AbstractController
     #[Route('/employee/{employeeId}', name: 'get_employee', methods: 'GET')]
     public function getEmployee(int $employeeId): JsonResponse
     {
+        try {
+            $this->employeeService->getEmployee($employeeId);
+        } catch (BadRequestException $exception) {
+            return new JsonResponse(
+                ['message' => $exception->getMessage()],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         return new JsonResponse(
             $this->employeeService->getEmployee($employeeId)
         );
@@ -57,24 +66,40 @@ class EmployeeController extends AbstractController
     #[Route('/employee/{employeeId}', name: 'update_employee', methods: 'PUT')]
     public function updateEmployee(Request $request): JsonResponse
     {
-        return new JsonResponse(
-            ['message' => 'Employee id not exists!'],
-            ($this->employeeService->updateEmployee(
+        try {
+            $this->employeeService->updateEmployee(
                 UpdateEmployeeCommandFactory::createFromArray(
                     json_decode($request->getContent(), true)
                 )->setEmployeeId(
                     $request->get('employeeId')
                 )
-            )) ? 204 : 404
+            );
+        } catch (BadRequestException $exception) {
+            return new JsonResponse(
+                ['message' => $exception->getMessage()],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        return new JsonResponse(
+            status: Response::HTTP_NO_CONTENT
         );
     }
 
     #[Route('/employee/{employeeId}', name: 'delete_employee', methods: 'DELETE')]
     public function deleteEmployee(int $employeeId): JsonResponse
     {
+        try {
+            $this->employeeService->deleteEmployee($employeeId);
+        } catch (BadRequestException $exception) {
+            return new JsonResponse(
+                ['message' => $exception->getMessage()],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         return new JsonResponse(
-            ['message' => 'Employee id not exists!'],
-            ($this->employeeService->deleteEmployee($employeeId)) ? 204 : 404,
+            status: Response::HTTP_NO_CONTENT
         );
     }
 

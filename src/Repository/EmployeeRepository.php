@@ -20,7 +20,7 @@ class EmployeeRepository
         $this->db = $db;
     }
 
-    public function getEmployeeData(int $employeeId): EmployeeDTO
+    public function getEmployeeData(int $employeeId): ?EmployeeDTO
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT
@@ -35,7 +35,7 @@ class EmployeeRepository
             LEFT JOIN
                 company_employee AS ce ON ce.employee_id = e.id
             WHERE
-                    e.id = :employeeId
+                e.id = :employeeId
             GROUP BY
                 e.id
         SQL);
@@ -44,9 +44,13 @@ class EmployeeRepository
             'employeeId' => $employeeId,
         ]);
 
-        return EmployeeDTOFactory::createFromArray(
-            $statement->fetch(PDO::FETCH_ASSOC)
-        );
+        $employeeData = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $employeeData
+            ? EmployeeDTOFactory::createFromArray(
+                $employeeData
+            )
+            : null;
     }
 
     public function getEmployeesData(): array
@@ -97,7 +101,7 @@ class EmployeeRepository
         return $createdEmployeeId['id'];
     }
 
-    public function updateEmployeeData(UpdateEmployeeCommand $updateEmployeeCommand): ?int
+    public function updateEmployeeData(UpdateEmployeeCommand $updateEmployeeCommand): bool
     {
         $statement = $this->db->prepare(<<<SQL
              UPDATE 
@@ -121,29 +125,24 @@ class EmployeeRepository
             'employeeId' => $updateEmployeeCommand->getEmployeeId(),
         ]);
 
-        $updatedEmployeeData = $statement->fetch(PDO::FETCH_ASSOC);
-
-        return $updatedEmployeeData['id'] ?? null;
+        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function deleteEmployeeData(int $employeeId): ?int
+    public function deleteEmployeeData(int $employeeId): bool
     {
         $statement = $this->db->prepare(<<<SQL
             DELETE FROM
                 employee AS e
             WHERE
                 e.id = :employeeId
-            RETURNING 
-                id
+            RETURNING id;
         SQL);
 
         $statement->execute([
             'employeeId' => $employeeId,
         ]);
 
-        $deletedEmployeeId = $statement->fetch(PDO::FETCH_ASSOC);
-
-        return $deletedEmployeeId['id'] ?? null;
+        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function doesEmployeeExist(int $employeeId): bool

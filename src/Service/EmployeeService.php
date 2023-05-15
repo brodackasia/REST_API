@@ -23,9 +23,12 @@ class EmployeeService
         $this->validator = $validator;
     }
 
-    public function getEmployee(int $employeeId): EmployeeDTO
+    public function getEmployee(int $employeeId): ?EmployeeDTO
     {
-        return $this->employeeRepository->getEmployeeData($employeeId);
+        return $this->employeeRepository->getEmployeeData($employeeId)
+            ?: throw new BadRequestException(
+                'This employee id not exists!'
+            );
     }
 
     public function getEmployees(): array
@@ -40,16 +43,32 @@ class EmployeeService
         return $this->employeeRepository->createEmployeeData($createEmployeeCommand);
     }
 
-    public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): ?int
+    public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): void
     {
+        if (
+            !$this->employeeRepository->updateEmployeeData($updateEmployeeCommand)
+        ) {
+            throw new BadRequestException(
+                'This employee id not exists!'
+            );
+        }
+
         $this->validator->validate($updateEmployeeCommand);
 
-        return $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
+        $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
 
-    public function deleteEmployee(int $companyId): ?int
+    public function deleteEmployee(int $companyId): void
     {
-        return $this->employeeRepository->deleteEmployeeData($companyId);
+        if (
+            !$this->employeeRepository->deleteEmployeeData($companyId)
+        ) {
+            throw new BadRequestException(
+                'This employee id not exists!'
+            );
+        }
+
+        $this->employeeRepository->deleteEmployeeData($companyId);
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
