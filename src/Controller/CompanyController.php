@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Command\Factory\CreateCompanyCommandFactory;
 use App\Command\Factory\UpdateCompanyCommandFactory;
 use App\Service\CompanyService;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -57,6 +58,17 @@ class CompanyController extends AbstractController
     #[Route('/company/{companyId}', name: 'update_company', methods: 'PUT')]
     public function updateCompany(Request $request): JsonResponse
     {
+        try {
+            $this->companyService->vatIdentificationNumberValidation(
+                json_decode($request->getContent(), true)
+            );
+        } catch (BadRequestException $exception) {
+            return new JsonResponse(
+                ['message' => $exception->getMessage()],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         $this->companyService->updateCompany(
             UpdateCompanyCommandFactory::createFromRequest(
                 json_decode($request->getContent(), true)
