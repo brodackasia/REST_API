@@ -45,6 +45,8 @@ class EmployeeService
 
     public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): void
     {
+        $this->validator->validate($updateEmployeeCommand);
+
         if (
             !$this->employeeRepository->updateEmployeeData($updateEmployeeCommand)
         ) {
@@ -52,8 +54,6 @@ class EmployeeService
                 'This employee id not exists!'
             );
         }
-
-        $this->validator->validate($updateEmployeeCommand);
     }
 
     public function deleteEmployee(int $employeeId): void

@@ -136,7 +136,8 @@ class EmployeeRepository
                 employee AS e
             WHERE
                 e.id = :employeeId
-            RETURNING id;
+            RETURNING 
+                id;
         SQL);
 
         $statement->execute([
