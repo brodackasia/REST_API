@@ -10,20 +10,6 @@ class EmployeeDTOFactory
 {
     public static function createFromArray(array $employeeData): EmployeeDTO
     {
-        $test = new EmployeeDTO(
-            $employeeData['id'],
-            $employeeData['name'],
-            $employeeData['surname'],
-            $employeeData['email'],
-            $employeeData['phone_number'] ?? null,
-            EmployeeDTOFactory::convertCompaniesIds(
-                $employeeData['companies_ids']
-            ),
-        );
-
-        $phoneNumber = $test->phoneNumber;
-
-
         return new EmployeeDTO(
             $employeeData['id'],
             $employeeData['name'],

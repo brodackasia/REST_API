@@ -154,6 +154,6 @@ class CompanyRepository
             'vatIdentificationNumber' => $vatIdentificationNumber,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
