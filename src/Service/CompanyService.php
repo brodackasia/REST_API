@@ -42,6 +42,8 @@ class CompanyService
 
     public function updateCompany(UpdateCompanyCommand $updateCompanyCommand): void
     {
+        $this->vatIdentificationNumberValidation($updateCompanyCommand->getVatIdentificationNumber());
+
         $this->validator->validate($updateCompanyCommand);
 
         $this->companyRepository->updateCompanyData($updateCompanyCommand);
@@ -52,10 +54,10 @@ class CompanyService
         $this->companyRepository->deleteCompanyData($companyId);
     }
 
-    public function vatIdentificationNumberValidation(array $companyData): void
+    public function vatIdentificationNumberValidation(string $vatIdentificationNumber): void
     {
-        if(
-            $this->companyRepository->doesVatIdentificationNumberExists($companyData['vat_identification_number'])
+        if (
+            $this->companyRepository->doesVatIdentificationNumberExists($vatIdentificationNumber)
         ) {
             throw new BadRequestException('Vat Identification Number must be unique!');
         }

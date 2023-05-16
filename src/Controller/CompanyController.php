@@ -59,8 +59,12 @@ class CompanyController extends AbstractController
     public function updateCompany(Request $request): JsonResponse
     {
         try {
-            $this->companyService->vatIdentificationNumberValidation(
-                json_decode($request->getContent(), true)
+            $this->companyService->updateCompany(
+                UpdateCompanyCommandFactory::createFromRequest(
+                    json_decode($request->getContent(), true)
+                )->setCompanyId(
+                    $request->get('companyId')
+                )
             );
         } catch (BadRequestException $exception) {
             return new JsonResponse(
@@ -68,14 +72,6 @@ class CompanyController extends AbstractController
                 Response::HTTP_BAD_REQUEST
             );
         }
-
-        $this->companyService->updateCompany(
-            UpdateCompanyCommandFactory::createFromRequest(
-                json_decode($request->getContent(), true)
-            )->setCompanyId(
-                $request->get('companyId')
-            )
-        );
 
         return new JsonResponse(
             status: Response::HTTP_NO_CONTENT
