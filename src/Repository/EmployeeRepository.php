@@ -88,10 +88,10 @@ class EmployeeRepository
         SQL);
 
         $statement->execute([
-            'name' => $createEmployeeCommand->name,
-            'surname' => $createEmployeeCommand->surname,
-            'email' => $createEmployeeCommand->email,
-            'phoneNumber' => $createEmployeeCommand->phone_number,
+            'name' => $createEmployeeCommand->getName(),
+            'surname' => $createEmployeeCommand->getSurname(),
+            'email' => $createEmployeeCommand->getEmail(),
+            'phoneNumber' => $createEmployeeCommand->getPhoneNumber(),
         ]);
 
         $createdEmployeeId = $statement->fetch(PDO::FETCH_ASSOC);

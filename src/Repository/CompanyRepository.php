@@ -104,7 +104,7 @@ class CompanyRepository
     {
         $statement = $this->db->prepare(<<<SQL
             UPDATE 
-                company
+                company AS c
             SET 
                 "name" = :name,
                 vat_identification_number = :vatIdentificationNumber,
@@ -112,7 +112,7 @@ class CompanyRepository
                 city = :city,
                 zip_code = :zipCode
             WHERE
-                id = :companyId
+                c.id = :companyId
         SQL);
 
         $statement->execute([
@@ -129,13 +129,31 @@ class CompanyRepository
     {
         $statement = $this->db->prepare(<<<SQL
             DELETE FROM
-                company
+                company AS c
             WHERE 
-                company.id = :companyId
+                c.id = :companyId
         SQL);
 
         $statement->execute([
-           'companyId' => $companyId
+           'companyId' => $companyId,
         ]);
+    }
+
+    public function doesVatIdentificationNumberExists(string $vatIdentificationNumber): bool
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT 
+                1
+            FROM 
+                company AS c
+            WHERE 
+                c.vat_identification_number = :vatIdentificationNumber
+        SQL);
+
+        $statement->execute([
+            'vatIdentificationNumber' => $vatIdentificationNumber,
+        ]);
+
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
