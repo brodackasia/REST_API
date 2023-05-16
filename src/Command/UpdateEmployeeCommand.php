@@ -8,37 +8,50 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateEmployeeCommand
 {
-    #[Assert\Regex(pattern: '/\d/', message: 'Your name cannot contain a number', match: false)]
-    #[Assert\NotBlank(message: 'Name should not be blank')]
     #[Assert\Length(
         min: 3,
         max: 30,
-        minMessage: 'Your name must be at least 3 characters long',
-        maxMessage: 'Your name cannot be longer than 30 characters',
+        minMessage: 'Name must be at least 3 characters long',
+        maxMessage: 'Name cannot be longer than 30 characters',
     )]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Name cannot contain a number',
+        match: false
+    )]
+    #[Assert\NotBlank(message: 'Name should not be blank')]
     private string $name;
 
-    #[Assert\Regex(pattern: '/\d/', message: 'Your surname cannot contain a number', match: false)]
-    #[Assert\NotBlank(message: 'Name should not be blank')]
     #[Assert\Length(
         min: 3,
         max: 50,
-        minMessage: 'Your surname must be at least 3 characters long',
-        maxMessage: 'Your surname cannot be longer than 50 characters',
+        minMessage: 'Surname must be at least 3 characters long',
+        maxMessage: 'Surname cannot be longer than 50 characters',
     )]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Surname cannot contain a number',
+        match: false
+    )]
+    #[Assert\NotBlank(message: 'Surname should not be blank')]
     private string $surname;
 
-    #[Assert\Email(message: 'The email is not a valid email')]
-    #[Assert\NotBlank(message: 'Name should not be blank')]
     #[Assert\Length(
         min: 3,
         max: 50,
-        minMessage: 'Your email must be at least 3 characters long',
-        maxMessage: 'Your email cannot be longer than 50 characters',
+        minMessage: 'Email must be at least 3 characters long',
+        maxMessage: 'Email cannot be longer than 50 characters',
     )]
+    #[Assert\Email(message: 'Email is not in valid format')]
+    #[Assert\NotBlank(message: 'Email should not be blank')]
     public string  $email;
 
-    #[Assert\Regex(pattern: '/^\d{9}$/', message: 'Phone number format should be in format 123456789', match: true)]
+    //^początek stringa, $ jego koniec, \d to 0-9 i {9} czyli 9 razy
+    #[Assert\Regex(
+        pattern: '/^\d{9}$/',
+        message: 'Phone number should be in format 123456789',
+        match: true
+    )]
     private ?string $phoneNumber;
 
     private string $employeeId;
