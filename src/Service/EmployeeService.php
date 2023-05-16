@@ -26,7 +26,7 @@ class EmployeeService
     public function getEmployee(int $employeeId): ?EmployeeDTO
     {
         return $this->employeeRepository->getEmployeeData($employeeId)
-            ?: throw new BadRequestException(
+            ?? throw new BadRequestException(
                 'This employee id not exists!'
             );
     }
@@ -45,6 +45,8 @@ class EmployeeService
 
     public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): void
     {
+        $this->validator->validate($updateEmployeeCommand);
+
         if (
             !$this->employeeRepository->updateEmployeeData($updateEmployeeCommand)
         ) {
@@ -52,19 +54,16 @@ class EmployeeService
                 'This employee id not exists!'
             );
         }
-
-        $this->validator->validate($updateEmployeeCommand);
-
-        $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
 
     public function deleteEmployee(int $employeeId): void
     {
 
-        if ($this->employeeRepository->isEmployeeAssigned($employeeId))
-        {
+        if (
+            $this->employeeRepository->isEmployeeAssigned($employeeId)
+        ) {
             throw new BadRequestException(
-                'Cannot delete, employee assigned to company!'
+                'Employee is assigned to company!'
             );
         }
 
@@ -75,8 +74,6 @@ class EmployeeService
                 'This employee id not exists!'
             );
         }
-
-        $this->employeeRepository->deleteEmployeeData($employeeId);
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
