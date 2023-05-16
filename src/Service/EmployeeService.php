@@ -23,11 +23,11 @@ class EmployeeService
         $this->validator = $validator;
     }
 
-    public function getEmployee(int $employeeId): ?EmployeeDTO
+    public function getEmployee(int $employeeId): EmployeeDTO
     {
         return $this->employeeRepository->getEmployeeData($employeeId)
             ?? throw new BadRequestException(
-                'This employee id not exists!'
+                'Employee not exists!'
             );
     }
 
@@ -51,7 +51,7 @@ class EmployeeService
             !$this->employeeRepository->updateEmployeeData($updateEmployeeCommand)
         ) {
             throw new BadRequestException(
-                'This employee id not exists!'
+                'Employee not exists!'
             );
         }
     }
@@ -62,7 +62,7 @@ class EmployeeService
             $this->employeeRepository->isEmployeeAssigned($employeeId)
         ) {
             throw new BadRequestException(
-                'Cannot delete, employee assigned to company!'
+                'Employee is assigned to company!'
             );
         }
 
@@ -70,7 +70,7 @@ class EmployeeService
             !$this->employeeRepository->deleteEmployeeData($employeeId)
         ) {
             throw new BadRequestException(
-                'This employee id not exists!'
+                'Employee not exists!'
             );
         }
     }

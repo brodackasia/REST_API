@@ -10,7 +10,6 @@ use App\Database\Connection;
 use App\DTO\EmployeeDTO;
 use App\DTO\Factory\EmployeeDTOFactory;
 use PDO;
-use function React\Promise\race;
 
 class EmployeeRepository
 {
@@ -48,9 +47,7 @@ class EmployeeRepository
         $employeeData = $statement->fetch(PDO::FETCH_ASSOC);
 
         return $employeeData
-            ? EmployeeDTOFactory::createFromArray(
-                $employeeData
-            )
+            ? EmployeeDTOFactory::createFromArray($employeeData)
             : null;
     }
 
@@ -126,7 +123,7 @@ class EmployeeRepository
             'employeeId' => $updateEmployeeCommand->getEmployeeId(),
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function deleteEmployeeData(int $employeeId): bool
@@ -144,7 +141,7 @@ class EmployeeRepository
             'employeeId' => $employeeId,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function isEmployeeAssigned($employeeId): bool
@@ -162,7 +159,7 @@ class EmployeeRepository
             'employeeId' => $employeeId,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function doesEmployeeExist(int $employeeId): bool
@@ -180,7 +177,7 @@ class EmployeeRepository
             'employeeId' => $employeeId,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function doesCompanyExists(int $companyId): bool
@@ -198,7 +195,7 @@ class EmployeeRepository
             'companyId' => $companyId,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function doesEmployeeCompanyAssignmentExist(int $employeeId, int $companyId): bool
@@ -219,7 +216,7 @@ class EmployeeRepository
             'employeeId' => $employeeId,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
@@ -256,6 +253,6 @@ class EmployeeRepository
             'companyId' => $companyId,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
