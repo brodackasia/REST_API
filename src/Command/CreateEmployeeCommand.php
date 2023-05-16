@@ -6,7 +6,7 @@ namespace App\Command;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly class CreateEmployeeCommand
+class CreateEmployeeCommand
 {
     #[Assert\Regex(pattern: '/\d/', message: 'Your name cannot contain a number', match: false)]
     #[Assert\NotBlank(message: 'Name should not be blank')]
@@ -16,7 +16,7 @@ readonly class CreateEmployeeCommand
         minMessage: 'Your name must be at least 3 characters long',
         maxMessage: 'Your name cannot be longer than 30 characters',
     )]
-    public string $name;
+    private string $name;
 
     #[Assert\Regex(pattern: '/\d/', message: 'Your surname cannot contain a number', match: false)]
     #[Assert\NotBlank(message: 'Surname should not be blank')]
@@ -26,7 +26,7 @@ readonly class CreateEmployeeCommand
         minMessage: 'Your surname must be at least 3 characters long',
         maxMessage: 'Your surname cannot be longer than 50 characters',
     )]
-    public string $surname;
+    private string $surname;
 
     #[Assert\Email(message: 'This email is not in valid format')]
     #[Assert\NotBlank(message: 'Email should not be blank')]
@@ -36,11 +36,11 @@ readonly class CreateEmployeeCommand
         minMessage: 'Your email must be at least 3 characters long',
         maxMessage: 'Your email cannot be longer than 50 characters',
     )]
-    public string  $email;
+    private string  $email;
 
     //^początek stringa, $ jego koniec, \d to 0-9 i {9} czyli 9 razy
     #[Assert\Regex(pattern: '/^\d{9}$/', message: 'Phone number format should be in format 123456789', match: true)]
-    public ?string $phone_number;
+    private ?string $phone_number;
 
     public function __construct(
         string $name,
@@ -52,5 +52,25 @@ readonly class CreateEmployeeCommand
         $this->surname = $surname;
         $this->email = $email;
         $this->phone_number = $phone_number;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phone_number;
     }
 }

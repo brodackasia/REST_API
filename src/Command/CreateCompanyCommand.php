@@ -6,7 +6,7 @@ namespace App\Command;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly class CreateCompanyCommand
+class CreateCompanyCommand
 {
     #[Assert\Length(
         min: 2,
@@ -15,7 +15,7 @@ readonly class CreateCompanyCommand
         maxMessage: 'Company name cannot be longer than 50 characters!',
     )]
     #[Assert\NotBlank(message: 'Company name must not be blank!')]
-    public string $name;
+    private string $name;
 
     #[Assert\Regex(
         pattern: '/^\d{10}$/',
@@ -23,7 +23,7 @@ readonly class CreateCompanyCommand
         match: true
     )]
     #[Assert\NotBlank(message: 'Company vat identification number must not be blank!')]
-    public string $vatIdentificationNumber;
+    private string $vatIdentificationNumber;
 
     #[Assert\Length(
         min: 5,
@@ -32,7 +32,7 @@ readonly class CreateCompanyCommand
         maxMessage: 'Company address cannot be longer than 30 characters!',
     )]
     #[Assert\NotBlank(message: 'Company address must not be blank!')]
-    public string $address;
+    private string $address;
 
     #[Assert\Length(
         min: 2,
@@ -46,7 +46,7 @@ readonly class CreateCompanyCommand
         match: false
     )]
     #[Assert\NotBlank(message: 'Company city must not be blank!')]
-    public string $city;
+    private string $city;
 
     #[Assert\Regex(
         pattern: '/^\d{2}-\d{3}$/',
@@ -54,7 +54,7 @@ readonly class CreateCompanyCommand
         match: true
     )]
     #[Assert\NotBlank(message: 'Company zip code must not be blank!')]
-    public string $zipCode;
+    private string $zipCode;
 
     public function __construct(
         string $name,
@@ -68,5 +68,30 @@ readonly class CreateCompanyCommand
         $this->address = $address;
         $this->city = $city;
         $this->zipCode = $zipCode;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getVatIdentificationNumber(): string
+    {
+        return $this->vatIdentificationNumber;
+    }
+
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+    public function getCity(): string
+    {
+        return $this->city;
+    }
+
+    public function getZipCode(): string
+    {
+        return $this->zipCode;
     }
 }
