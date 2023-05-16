@@ -47,9 +47,7 @@ class EmployeeRepository
         $employeeData = $statement->fetch(PDO::FETCH_ASSOC);
 
         return $employeeData
-            ? EmployeeDTOFactory::createFromArray(
-                $employeeData
-            )
+            ? EmployeeDTOFactory::createFromArray($employeeData)
             : null;
     }
 
@@ -125,7 +123,7 @@ class EmployeeRepository
             'employeeId' => $updateEmployeeCommand->getEmployeeId(),
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function deleteEmployeeData(int $employeeId): bool
@@ -135,14 +133,15 @@ class EmployeeRepository
                 employee AS e
             WHERE
                 e.id = :employeeId
-            RETURNING id;
+            RETURNING 
+                id;
         SQL);
 
         $statement->execute([
             'employeeId' => $employeeId,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function isEmployeeAssigned($employeeId): bool
@@ -160,7 +159,7 @@ class EmployeeRepository
             'employeeId' => $employeeId,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function doesEmployeeExist(int $employeeId): bool
@@ -178,7 +177,7 @@ class EmployeeRepository
             'employeeId' => $employeeId,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function doesCompanyExists(int $companyId): bool
@@ -196,7 +195,7 @@ class EmployeeRepository
             'companyId' => $companyId,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function doesEmployeeCompanyAssignmentExist(int $employeeId, int $companyId): bool
@@ -217,7 +216,7 @@ class EmployeeRepository
             'employeeId' => $employeeId,
         ]);
 
-        return (bool)$statement->fetch(PDO::FETCH_ASSOC);
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
@@ -233,5 +232,27 @@ class EmployeeRepository
             'employeeId' => $employeeId,
             'companyId' => $companyId,
         ]);
+    }
+
+    public function deleteEmployeeCompanyAssignment(int $employeeId, int $companyId): bool
+    {
+        $statement = $this->db->prepare(<<<SQL
+            DELETE FROM
+                company_employee AS c_e
+            WHERE 
+                c_e.employee_id = :employeeId
+            AND
+                c_e.company_id = :companyId
+            RETURNING 
+                c_e.employee_id,
+                c_e.company_id
+        SQL);
+
+        $statement->execute([
+            'employeeId' => $employeeId,
+            'companyId' => $companyId,
+        ]);
+
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
