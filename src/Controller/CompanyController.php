@@ -26,8 +26,8 @@ class CompanyController extends AbstractController
     #[Route('/company/{companyId}', name: 'get_company', methods: 'GET')]
     public function getCompany(int $companyId): JsonResponse
     {
-        try{
-            $this->companyService->getCompany($companyId);
+        try {
+            $companyData = $this->companyService->getCompany($companyId);
         } catch (BadRequestException $exception) {
             return new JsonResponse(
                 ['message'=> $exception->getMessage()],
@@ -36,7 +36,7 @@ class CompanyController extends AbstractController
         }
 
         return new JsonResponse(
-            $this->companyService->getCompany($companyId)
+            $companyData
         );
     }
 
@@ -96,7 +96,7 @@ class CompanyController extends AbstractController
     #[Route('/company/{companyId}', name: 'delete_company', methods: 'DELETE')]
     public function deleteCompany(int $companyId): JsonResponse
     {
-        try{
+        try {
             $this->companyService->deleteCompany($companyId);
         } catch (BadRequestException $exception) {
             return new JsonResponse(
