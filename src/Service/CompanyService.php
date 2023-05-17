@@ -25,10 +25,9 @@ class CompanyService
 
     public function getCompany(int $companyId): CompanyDTO
     {
-        return $this->companyRepository->getCompanyData($companyId)
-            ?? throw new BadRequestException(
-                'Company not exists!'
-            );
+        $this->throwIfCompanyNotExists($companyId);
+
+        return $this->companyRepository->getCompanyData($companyId);
     }
 
     public function getCompanies(): array
@@ -38,40 +37,52 @@ class CompanyService
 
     public function createCompany(CreateCompanyCommand $createCompanyCommand): int
     {
-        $this->validator->validate($createCompanyCommand);
+        $this->throwIfVatIdentificationNumberAlreadyExists(
+            $createCompanyCommand->getVatIdentificationNumber()
+        );
 
-        if (
-            $this->companyRepository->doesVatIdentificationNumberExists($createCompanyCommand->getVatIdentificationNumber())
-        ) {
-            throw new BadRequestException('Vat Identification Number must be unique!');
-        }
+        $this->validator->validate($createCompanyCommand);
 
         return $this->companyRepository->createCompanyData($createCompanyCommand);
     }
 
     public function updateCompany(UpdateCompanyCommand $updateCompanyCommand): void
     {
+        $this->throwIfCompanyNotExists(
+            (int) $updateCompanyCommand->getCompanyId()
+        );
+
+        $this->throwIfVatIdentificationNumberAlreadyExists(
+            $updateCompanyCommand->getVatIdentificationNumber()
+        );
+
         $this->validator->validate($updateCompanyCommand);
 
-        if (
-            $this->companyRepository->doesVatIdentificationNumberExists($updateCompanyCommand->getVatIdentificationNumber())
-        ) {
-            throw new BadRequestException('Vat Identification Number must be unique!');
-        }
-
-        if (
-            !$this->companyRepository->updateCompanyData($updateCompanyCommand)
-        ) {
-            throw new BadRequestException(
-                'Company not exists!'
-            );
-        }
+        $this->companyRepository->updateCompanyData($updateCompanyCommand);
     }
 
     public function deleteCompany(int $companyId): void
     {
+        $this->throwIfCompanyNotExists($companyId);
+
+        $this->companyRepository->deleteCompanyData($companyId);
+    }
+
+    private function throwIfVatIdentificationNumberAlreadyExists(string $vatIdentificationNumber): void
+    {
         if (
-            !$this->companyRepository->deleteCompanyData($companyId)
+            $this->companyRepository->doesVatIdentificationNumberExists($vatIdentificationNumber)
+        ) {
+            throw new BadRequestException(
+                'Vat Identification Number must be unique!'
+            );
+        }
+    }
+
+    private function throwIfCompanyNotExists(int $companyId): void
+    {
+        if (
+            !$this->companyRepository->doesCompanyExists($companyId)
         ) {
             throw new BadRequestException(
                 'Company not exists!'
