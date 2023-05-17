@@ -112,7 +112,7 @@ class EmployeeRepository
              WHERE 
                  e.id = :employeeId
              RETURNING 
-                id;
+                id
         SQL);
 
         $statement->execute([
@@ -134,7 +134,7 @@ class EmployeeRepository
             WHERE
                 e.id = :employeeId
             RETURNING 
-                id;
+                id
         SQL);
 
         $statement->execute([
