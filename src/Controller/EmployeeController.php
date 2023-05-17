@@ -51,14 +51,21 @@ class EmployeeController extends AbstractController
     #[Route('/employee', name: 'create_employee', methods: 'POST')]
     public function createEmployee(Request $request): JsonResponse
     {
-        return new JsonResponse(
-            [
-                'employeeId' => $this->employeeService->createEmployee(
-                    CreateEmployeeCommandFactory::createFromRequest(
-                        json_decode($request->getContent(), true)
-                    )
+        try {
+            $createdEmployeeId = $this->employeeService->createEmployee(
+                CreateEmployeeCommandFactory::createFromRequest(
+                    json_decode($request->getContent(), true)
                 )
-            ],
+            );
+        } catch (BadRequestException $exception) {
+            return new JsonResponse(
+                ['message' => $exception->getMessage()],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        return new JsonResponse(
+            ['employeeId' => $createdEmployeeId],
             Response::HTTP_CREATED
         );
     }
