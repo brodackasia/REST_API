@@ -25,6 +25,8 @@ class CompanyService
 
     public function getCompany(int $companyId): CompanyDTO
     {
+        $this->throwIfCompanyNotExists($companyId);
+
         return $this->companyRepository->getCompanyData($companyId);
     }
 
@@ -35,6 +37,10 @@ class CompanyService
 
     public function createCompany(CreateCompanyCommand $createCompanyCommand): int
     {
+        $this->throwIfVatIdentificationNumberAlreadyExists(
+            $createCompanyCommand->getVatIdentificationNumber()
+        );
+
         $this->validator->validate($createCompanyCommand);
 
         return $this->companyRepository->createCompanyData($createCompanyCommand);
@@ -42,7 +48,13 @@ class CompanyService
 
     public function updateCompany(UpdateCompanyCommand $updateCompanyCommand): void
     {
-        $this->vatIdentificationNumberValidation($updateCompanyCommand->getVatIdentificationNumber());
+        $this->throwIfCompanyNotExists(
+            (int) $updateCompanyCommand->getCompanyId()
+        );
+
+        $this->throwIfVatIdentificationNumberAlreadyExists(
+            $updateCompanyCommand->getVatIdentificationNumber()
+        );
 
         $this->validator->validate($updateCompanyCommand);
 
@@ -51,15 +63,30 @@ class CompanyService
 
     public function deleteCompany(int $companyId): void
     {
+        $this->throwIfCompanyNotExists($companyId);
+
         $this->companyRepository->deleteCompanyData($companyId);
     }
 
-    public function vatIdentificationNumberValidation(string $vatIdentificationNumber): void
+    private function throwIfVatIdentificationNumberAlreadyExists(string $vatIdentificationNumber): void
     {
         if (
             $this->companyRepository->doesVatIdentificationNumberExists($vatIdentificationNumber)
         ) {
-            throw new BadRequestException('Vat Identification Number must be unique!');
+            throw new BadRequestException(
+                'Vat Identification Number must be unique!'
+            );
+        }
+    }
+
+    private function throwIfCompanyNotExists(int $companyId): void
+    {
+        if (
+            !$this->companyRepository->doesCompanyExists($companyId)
+        ) {
+            throw new BadRequestException(
+                'Company not exists!'
+            );
         }
     }
 }

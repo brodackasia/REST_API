@@ -156,4 +156,22 @@ class CompanyRepository
 
         return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function doesCompanyExists(int $companyId): bool
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT
+                1
+            FROM
+                company AS c 
+            WHERE 
+                c.id = :companyId
+        SQL);
+
+        $statement->execute([
+            'companyId' => $companyId,
+        ]);
+
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
+    }
 }

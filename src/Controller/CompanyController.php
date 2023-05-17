@@ -26,8 +26,17 @@ class CompanyController extends AbstractController
     #[Route('/company/{companyId}', name: 'get_company', methods: 'GET')]
     public function getCompany(int $companyId): JsonResponse
     {
+        try {
+            $companyData = $this->companyService->getCompany($companyId);
+        } catch (BadRequestException $exception) {
+            return new JsonResponse(
+                ['message'=> $exception->getMessage()],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         return new JsonResponse(
-            $this->companyService->getCompany($companyId),
+            $companyData
         );
     }
 
@@ -42,15 +51,21 @@ class CompanyController extends AbstractController
     #[Route('/company', name: 'create_company', methods: 'POST')]
     public function createCompany(Request $request): JsonResponse
     {
+        try {
+            $createdCompanyId = $this->companyService->createCompany(
+                CreateCompanyCommandFactory::createFromRequest(
+                    json_decode($request->getContent(), true)
+                )
+            );
+        } catch (BadRequestException $exception) {
+            return new JsonResponse(
+                ['message' => $exception->getMessage()],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
         return new JsonResponse(
-            [
-                'companyId' => $this->companyService->createCompany(
-                    CreateCompanyCommandFactory::createFromRequest(
-                        json_decode($request->getContent(), true)
-                    )
-                )
-            ],
+            ['companyId' => $createdCompanyId],
             Response::HTTP_CREATED
         );
     }
@@ -81,8 +96,15 @@ class CompanyController extends AbstractController
     #[Route('/company/{companyId}', name: 'delete_company', methods: 'DELETE')]
     public function deleteCompany(int $companyId): JsonResponse
     {
-        $this->companyService->deleteCompany($companyId);
-        
+        try {
+            $this->companyService->deleteCompany($companyId);
+        } catch (BadRequestException $exception) {
+            return new JsonResponse(
+                ['message' => $exception->getMessage()],
+                status: Response::HTTP_BAD_REQUEST
+            );
+        }
+
         return new JsonResponse(
             status: Response::HTTP_NO_CONTENT
         );
