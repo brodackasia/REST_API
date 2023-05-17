@@ -101,3 +101,8 @@ Parametry:
 Tworzenie połączenia między pracownikiem a firmą:
 
     POST /assign/{employeeId}/{companyId}
+
+Usuwanie połączenia między pracownikiem a firmą:
+
+    DELETE /assign/delete/{employeeId}/{companyId}
+
