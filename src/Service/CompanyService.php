@@ -25,7 +25,10 @@ class CompanyService
 
     public function getCompany(int $companyId): CompanyDTO
     {
-        return $this->companyRepository->getCompanyData($companyId);
+        return $this->companyRepository->getCompanyData($companyId)
+            ?? throw new BadRequestException(
+                'Company not exists!'
+            );
     }
 
     public function getCompanies(): array
@@ -37,29 +40,42 @@ class CompanyService
     {
         $this->validator->validate($createCompanyCommand);
 
+        if (
+            $this->companyRepository->doesVatIdentificationNumberExists($createCompanyCommand->getVatIdentificationNumber())
+        ) {
+            throw new BadRequestException('Vat Identification Number must be unique!');
+        }
+
         return $this->companyRepository->createCompanyData($createCompanyCommand);
     }
 
     public function updateCompany(UpdateCompanyCommand $updateCompanyCommand): void
     {
-        $this->vatIdentificationNumberValidation($updateCompanyCommand->getVatIdentificationNumber());
-
         $this->validator->validate($updateCompanyCommand);
 
-        $this->companyRepository->updateCompanyData($updateCompanyCommand);
+        if (
+            $this->companyRepository->doesVatIdentificationNumberExists($updateCompanyCommand->getVatIdentificationNumber())
+        ) {
+            throw new BadRequestException('Vat Identification Number must be unique!');
+        }
+
+        if (
+            !$this->companyRepository->updateCompanyData($updateCompanyCommand)
+        ) {
+            throw new BadRequestException(
+                'Company not exists!'
+            );
+        }
     }
 
     public function deleteCompany(int $companyId): void
     {
-        $this->companyRepository->deleteCompanyData($companyId);
-    }
-
-    public function vatIdentificationNumberValidation(string $vatIdentificationNumber): void
-    {
         if (
-            $this->companyRepository->doesVatIdentificationNumberExists($vatIdentificationNumber)
+            !$this->companyRepository->deleteCompanyData($companyId)
         ) {
-            throw new BadRequestException('Vat Identification Number must be unique!');
+            throw new BadRequestException(
+                'Company not exists!'
+            );
         }
     }
 }

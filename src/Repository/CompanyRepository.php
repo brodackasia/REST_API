@@ -20,7 +20,7 @@ class CompanyRepository
         $this->db = $db;
     }
 
-    public function getCompanyData(int $companyId): CompanyDTO
+    public function getCompanyData(int $companyId): ?CompanyDTO
     {
         $statement = $this->db->prepare(<<<SQL
             SELECT
@@ -45,9 +45,11 @@ class CompanyRepository
             'companyId' => $companyId,
         ]);
 
-        return CompanyDTOFactory::createFromArray(
-            $statement->fetch(PDO::FETCH_ASSOC)
-        );
+        $companyData = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $companyData
+            ? CompanyDTOFactory::createFromArray($companyData)
+            : null;
     }
 
     public function getCompaniesData(): array
@@ -100,7 +102,7 @@ class CompanyRepository
         return $createdCompanyId['id'];
     }
 
-    public function updateCompanyData(UpdateCompanyCommand $updateCompanyCommand): void
+    public function updateCompanyData(UpdateCompanyCommand $updateCompanyCommand): bool
     {
         $statement = $this->db->prepare(<<<SQL
             UPDATE 
@@ -113,6 +115,8 @@ class CompanyRepository
                 zip_code = :zipCode
             WHERE
                 c.id = :companyId
+            RETURNING 
+                id
         SQL);
 
         $statement->execute([
@@ -123,20 +127,26 @@ class CompanyRepository
             'zipCode' => $updateCompanyCommand->getZipCode(),
             'companyId' => $updateCompanyCommand->getCompanyId(),
         ]);
+
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function deleteCompanyData(int $companyId): void
+    public function deleteCompanyData(int $companyId): bool
     {
         $statement = $this->db->prepare(<<<SQL
             DELETE FROM
                 company AS c
             WHERE 
                 c.id = :companyId
+            RETURNING
+                id
         SQL);
 
         $statement->execute([
            'companyId' => $companyId,
         ]);
+
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function doesVatIdentificationNumberExists(string $vatIdentificationNumber): bool
