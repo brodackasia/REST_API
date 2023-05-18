@@ -29,7 +29,7 @@ class CompanyDTOFactory
             'intval',
             explode(
                 ',',
-                $employeesIdsInString
+                $employeesIdsInString,
             )
         );
     }

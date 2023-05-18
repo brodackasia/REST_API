@@ -36,7 +36,7 @@ class CompanyRepository
             LEFT JOIN
                 company_employee AS ce ON ce.company_id = c.id
             WHERE
-                    c.id = :companyId
+                c.id = :companyId
             GROUP BY
                 c.id
         SQL);

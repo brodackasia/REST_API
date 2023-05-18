@@ -51,15 +51,15 @@ class AssignmentRepository
     public function doesEmployeeCompanyAssignmentExist(int $employeeId, int $companyId): bool
     {
         $statement = $this->db->prepare(<<<SQL
-                SELECT 
-                    1
-                FROM 
-                    company_employee AS c_e
-                WHERE 
-                    c_e.company_id = :companyId
-                AND
-                    c_e.employee_id = :employeeId
-            SQL);
+            SELECT 
+                1
+            FROM 
+                company_employee AS c_e
+            WHERE 
+                c_e.company_id = :companyId
+            AND
+                c_e.employee_id = :employeeId
+        SQL);
 
         $statement->execute([
             'companyId' => $companyId,

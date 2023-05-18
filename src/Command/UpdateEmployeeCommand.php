@@ -44,7 +44,7 @@ class UpdateEmployeeCommand
     )]
     #[Assert\Email(message: 'Email is not in valid format')]
     #[Assert\NotBlank(message: 'Email should not be blank')]
-    public string  $email;
+    private string  $email;
 
     //^początek stringa, $ jego koniec, \d to 0-9 i {9} czyli 9 razy
     #[Assert\Regex(
@@ -56,20 +56,10 @@ class UpdateEmployeeCommand
 
     private string $employeeId;
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
     public function setName(string $name): UpdateEmployeeCommand
     {
         $this->name = $name;
         return $this;
-    }
-
-    public function getSurname(): string
-    {
-        return $this->surname;
     }
 
     public function setSurname(string $surname): UpdateEmployeeCommand
@@ -78,20 +68,10 @@ class UpdateEmployeeCommand
         return $this;
     }
 
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
     public function setEmail(string $email): UpdateEmployeeCommand
     {
         $this->email = $email;
         return $this;
-    }
-
-    public function getPhoneNumber(): ?string
-    {
-        return $this->phoneNumber;
     }
 
     public function setPhoneNumber(?string $phoneNumber): UpdateEmployeeCommand
@@ -100,14 +80,34 @@ class UpdateEmployeeCommand
         return $this;
     }
 
-    public function getEmployeeId(): string
-    {
-        return $this->employeeId;
-    }
-
     public function setEmployeeId(string $employeeId): UpdateEmployeeCommand
     {
         $this->employeeId = $employeeId;
         return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function getEmployeeId(): string
+    {
+        return $this->employeeId;
     }
 }
