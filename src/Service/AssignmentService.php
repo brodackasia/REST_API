@@ -53,7 +53,7 @@ class AssignmentService
             $this->assignmentRepository->doesEmployeeCompanyAssignmentExist($employeeId, $companyId)
         ) {
             throw new BadRequestException(
-                'Employee assigned to company!'
+                'Employee already assigned to company!'
             );
         }
     }
