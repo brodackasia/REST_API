@@ -79,7 +79,7 @@ class CompanyService
         }
     }
 
-    public function throwIfCompanyNotExists(int $companyId): void
+    private function throwIfCompanyNotExists(int $companyId): void
     {
         if (
             !$this->companyRepository->doesCompanyExists($companyId)
