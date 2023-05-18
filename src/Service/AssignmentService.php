@@ -24,6 +24,7 @@ class AssignmentService
         $this->employeeService = $employeeService;
         $this->companyService = $companyService;
     }
+
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
     {
         $this->employeeService->throwIfEmployeeNotExists($employeeId);

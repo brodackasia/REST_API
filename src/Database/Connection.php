@@ -14,7 +14,7 @@ class Connection extends PDO
         string $host,
         string $port,
         string $username = null,
-        string $password = null
+        string $password = null,
     ) {
         parent::__construct(
             sprintf(
@@ -25,7 +25,7 @@ class Connection extends PDO
                 $port,
             ),
             $username,
-            $password
+            $password,
         );
     }
 }
