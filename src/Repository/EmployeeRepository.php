@@ -99,7 +99,7 @@ class EmployeeRepository
         return $createdEmployeeId['id'];
     }
 
-    public function updateEmployeeData(UpdateEmployeeCommand $updateEmployeeCommand): bool
+    public function updateEmployeeData(UpdateEmployeeCommand $updateEmployeeCommand): void
     {
         $statement = $this->db->prepare(<<<SQL
              UPDATE 
@@ -111,8 +111,6 @@ class EmployeeRepository
                 phone_number = :phoneNumber
              WHERE 
                  e.id = :employeeId
-             RETURNING 
-                id
         SQL);
 
         $statement->execute([
@@ -122,26 +120,20 @@ class EmployeeRepository
             'phoneNumber' => $updateEmployeeCommand->getPhoneNumber(),
             'employeeId' => $updateEmployeeCommand->getEmployeeId(),
         ]);
-
-        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function deleteEmployeeData(int $employeeId): bool
+    public function deleteEmployeeData(int $employeeId): void
     {
         $statement = $this->db->prepare(<<<SQL
             DELETE FROM
                 employee AS e
             WHERE
                 e.id = :employeeId
-            RETURNING 
-                id
         SQL);
 
         $statement->execute([
             'employeeId' => $employeeId,
         ]);
-
-        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function isEmployeeAssigned($employeeId): bool
@@ -175,82 +167,6 @@ class EmployeeRepository
 
         $statement->execute([
             'employeeId' => $employeeId,
-        ]);
-
-        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function doesCompanyExists(int $companyId): bool
-    {
-        $statement = $this->db->prepare(<<<SQL
-            SELECT 
-                1
-            FROM 
-                company AS c
-            WHERE 
-                c.id = :companyId
-        SQL);
-
-        $statement->execute([
-            'companyId' => $companyId,
-        ]);
-
-        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function doesEmployeeCompanyAssignmentExist(int $employeeId, int $companyId): bool
-    {
-        $statement = $this->db->prepare(<<<SQL
-            SELECT 
-                1
-            FROM 
-                company_employee AS c_e
-            WHERE 
-                c_e.company_id = :companyId
-            AND
-                c_e.employee_id = :employeeId
-        SQL);
-
-        $statement->execute([
-            'companyId' => $companyId,
-            'employeeId' => $employeeId,
-        ]);
-
-        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function assignEmployeeToCompany(int $employeeId, int $companyId): void
-    {
-        $statement = $this->db->prepare(<<<SQL
-            INSERT INTO
-                company_employee (employee_id, company_id)
-            VALUES
-                (:employeeId, :companyId) 
-        SQL);
-
-        $statement->execute([
-            'employeeId' => $employeeId,
-            'companyId' => $companyId,
-        ]);
-    }
-
-    public function deleteEmployeeCompanyAssignment(int $employeeId, int $companyId): bool
-    {
-        $statement = $this->db->prepare(<<<SQL
-            DELETE FROM
-                company_employee AS c_e
-            WHERE 
-                c_e.employee_id = :employeeId
-            AND
-                c_e.company_id = :companyId
-            RETURNING 
-                c_e.employee_id,
-                c_e.company_id
-        SQL);
-
-        $statement->execute([
-            'employeeId' => $employeeId,
-            'companyId' => $companyId,
         ]);
 
         return (bool) $statement->fetch(PDO::FETCH_ASSOC);

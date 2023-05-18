@@ -17,18 +17,19 @@ class EmployeeService
 
     private Validator $validator;
 
-    public function __construct(EmployeeRepository $employeeRepository, Validator $validator)
-    {
+    public function __construct(
+        EmployeeRepository $employeeRepository,
+        Validator $validator,
+    ) {
         $this->employeeRepository = $employeeRepository;
         $this->validator = $validator;
     }
 
     public function getEmployee(int $employeeId): EmployeeDTO
     {
-        return $this->employeeRepository->getEmployeeData($employeeId)
-            ?? throw new BadRequestException(
-                'Employee not exists!'
-            );
+        $this->throwIfEmployeeNotExists($employeeId);
+        
+        return $this->employeeRepository->getEmployeeData($employeeId);
     }
 
     public function getEmployees(): array
@@ -45,68 +46,43 @@ class EmployeeService
 
     public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): void
     {
+        $this->throwIfEmployeeNotExists(
+            (int) $updateEmployeeCommand->getEmployeeId()
+        );
+        
         $this->validator->validate($updateEmployeeCommand);
 
-        if (
-            !$this->employeeRepository->updateEmployeeData($updateEmployeeCommand)
-        ) {
-            throw new BadRequestException(
-                'Employee not exists!'
-            );
-        }
+        $this->employeeRepository->updateEmployeeData($updateEmployeeCommand);
     }
 
     public function deleteEmployee(int $employeeId): void
+    {
+        $this->throwIfEmployeeNotExists($employeeId);
+        
+        $this->throwIfEmployeeAssigned($employeeId);
+        
+        $this->employeeRepository->deleteEmployeeData($employeeId);
+    }
+
+    private function throwIfEmployeeAssigned(int $employeeId): void
     {
         if (
             $this->employeeRepository->isEmployeeAssigned($employeeId)
         ) {
             throw new BadRequestException(
-                'Employee is assigned to company!'
-            );
-        }
-
-        if (
-            !$this->employeeRepository->deleteEmployeeData($employeeId)
-        ) {
-            throw new BadRequestException(
-                'Employee not exists!'
+                'Employee assigned to company!'
             );
         }
     }
 
-    public function assignEmployeeToCompany(int $employeeId, int $companyId): void
-    {
-        $this->assignmentValidation($employeeId, $companyId);
-
-        $this->employeeRepository->assignEmployeeToCompany($employeeId, $companyId);
-    }
-
-    public function deleteEmployeeCompanyAssignment(int $employeeId, int $companyId): void
-    {
-        if (
-            !$this->employeeRepository->deleteEmployeeCompanyAssignment($employeeId, $companyId)
-        ) {
-            throw new BadRequestException(
-                'Assignment not exists!'
-            );
-        }
-    }
-
-    private function assignmentValidation(int $employeeId, int $companyId): void
+    public function throwIfEmployeeNotExists(int $employeeId): void
     {
         if (
             !$this->employeeRepository->doesEmployeeExist($employeeId)
         ) {
-            throw new BadRequestException('This employee not exists!');
-        } else if(
-            !$this->employeeRepository->doesCompanyExists($companyId)
-        ) {
-            throw new BadRequestException('This company not exists!');
-        } else if(
-            $this->employeeRepository->doesEmployeeCompanyAssignmentExist($employeeId, $companyId)
-        ) {
-            throw new BadRequestException('This assignment already exists!');
+            throw new BadRequestException(
+                'Employee not exists!'
+            );
         }
     }
 }

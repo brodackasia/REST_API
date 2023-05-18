@@ -109,38 +109,4 @@ class EmployeeController extends AbstractController
             status: Response::HTTP_NO_CONTENT
         );
     }
-
-    #[Route('/assign/{employeeId}/{companyId}', name: 'assign', methods: 'POST')]
-    public function assignEmployee(int $employeeId, int $companyId): JsonResponse
-    {
-        try {
-            $this->employeeService->assignEmployeeToCompany($employeeId, $companyId);
-        } catch (BadRequestException $exception) {
-            return new JsonResponse(
-                ['message' => $exception->getMessage()],
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-
-        return new JsonResponse(
-            status: Response::HTTP_CREATED
-        );
-    }
-
-    #[Route('/assign/delete/{employeeId}/{companyId}', name: 'delete_assign', methods: 'DELETE')]
-    public function deleteEmployeeCompanyAssignment(int $employeeId, int $companyId): JsonResponse
-    {
-        try {
-            $this->employeeService->deleteEmployeeCompanyAssignment($employeeId, $companyId);
-        } catch (BadRequestException $exception) {
-            return new JsonResponse(
-                ['message' => $exception->getMessage()],
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-
-        return new JsonResponse(
-            status: Response::HTTP_NO_CONTENT
-        );
-    }
 }
