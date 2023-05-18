@@ -17,8 +17,10 @@ class CompanyService
 
     private Validator $validator;
 
-    public function __construct(CompanyRepository $companyRepository, Validator $validator)
-    {
+    public function __construct(
+        CompanyRepository $companyRepository,
+        Validator $validator,
+    ) {
         $this->companyRepository = $companyRepository;
         $this->validator = $validator;
     }
@@ -79,7 +81,7 @@ class CompanyService
         }
     }
 
-    private function throwIfCompanyNotExists(int $companyId): void
+    public function throwIfCompanyNotExists(int $companyId): void
     {
         if (
             !$this->companyRepository->doesCompanyExists($companyId)

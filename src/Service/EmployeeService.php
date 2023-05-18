@@ -7,7 +7,6 @@ namespace App\Service;
 use App\Command\CreateEmployeeCommand;
 use App\Command\UpdateEmployeeCommand;
 use App\DTO\EmployeeDTO;
-use App\Repository\CompanyRepository;
 use App\Repository\EmployeeRepository;
 use App\Validator\Validator;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -18,8 +17,10 @@ class EmployeeService
 
     private Validator $validator;
 
-    public function __construct(EmployeeRepository $employeeRepository, Validator $validator)
-    {
+    public function __construct(
+        EmployeeRepository $employeeRepository,
+        Validator $validator,
+    ) {
         $this->employeeRepository = $employeeRepository;
         $this->validator = $validator;
     }
@@ -58,12 +59,12 @@ class EmployeeService
     {
         $this->throwIfEmployeeNotExists($employeeId);
         
-        $this->throwIfEmployeeStillAssigned($employeeId);
+        $this->throwIfEmployeeAssigned($employeeId);
         
         $this->employeeRepository->deleteEmployeeData($employeeId);
     }
 
-    private function throwIfEmployeeStillAssigned(int $employeeId): void
+    private function throwIfEmployeeAssigned(int $employeeId): void
     {
         if (
             $this->employeeRepository->isEmployeeAssigned($employeeId)
@@ -74,7 +75,7 @@ class EmployeeService
         }
     }
 
-    private function throwIfEmployeeNotExists(int $employeeId): void
+    public function throwIfEmployeeNotExists(int $employeeId): void
     {
         if (
             !$this->employeeRepository->doesEmployeeExist($employeeId)

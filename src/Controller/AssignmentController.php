@@ -37,7 +37,7 @@ class AssignmentController extends AbstractController
         );
     }
 
-    #[Route('/assign/delete/{employeeId}/{companyId}', name: 'delete_assign', methods: 'DELETE')]
+    #[Route('/assign/{employeeId}/{companyId}', name: 'delete_assign', methods: 'DELETE')]
     public function deleteEmployeeCompanyAssignment(int $employeeId, int $companyId): JsonResponse
     {
         try {

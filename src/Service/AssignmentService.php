@@ -5,37 +5,30 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Repository\AssignmentRepository;
-use App\Repository\CompanyRepository;
-use App\Repository\EmployeeRepository;
-use App\Validator\Validator;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class AssignmentService
 {
     private AssignmentRepository $assignmentRepository;
 
-    private EmployeeRepository $employeeRepository;
+    private EmployeeService $employeeService;
 
-    private CompanyRepository $companyRepository;
-
-    private Validator $validator;
+    private CompanyService $companyService;
 
     public function __construct(
         AssignmentRepository $assignmentRepository,
-        EmployeeRepository $employeeRepository,
-        CompanyRepository $companyRepository,
-        Validator $validator,
+        EmployeeService $employeeService,
+        CompanyService $companyService,
     ) {
         $this->assignmentRepository = $assignmentRepository;
-        $this->employeeRepository = $employeeRepository;
-        $this->companyRepository = $companyRepository;
-        $this->validator = $validator;
+        $this->employeeService = $employeeService;
+        $this->companyService = $companyService;
     }
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
     {
-        $this->throwIfEmployeeNotExists($employeeId);
+        $this->employeeService->throwIfEmployeeNotExists($employeeId);
 
-        $this->throwIfCompanyNotExists($companyId);
+        $this->companyService->throwIfCompanyNotExists($companyId);
 
         $this->throwIfEmployeeCompanyAssignmentAlreadyExists($employeeId, $companyId);
 
@@ -44,9 +37,9 @@ class AssignmentService
 
     public function deleteEmployeeCompanyAssignment(int $employeeId, int $companyId): void
     {
-        $this->throwIfEmployeeNotExists($employeeId);
+        $this->employeeService->throwIfEmployeeNotExists($employeeId);
 
-        $this->throwIfCompanyNotExists($companyId);
+        $this->companyService->throwIfCompanyNotExists($companyId);
 
         $this->throwIfEmployeeCompanyAssignmentNotExists($employeeId, $companyId);
 
@@ -71,28 +64,6 @@ class AssignmentService
         ) {
             throw new BadRequestException(
                 'Assignment not exists!'
-            );
-        }
-    }
-
-    public function throwIfCompanyNotExists(int $companyId): void
-    {
-        if (
-            !$this->companyRepository->doesCompanyExists($companyId)
-        ) {
-            throw new BadRequestException(
-                'Company not exists!'
-            );
-        }
-    }
-
-    public function throwIfEmployeeNotExists(int $employeeId): void
-    {
-        if (
-            !$this->employeeRepository->doesEmployeeExist($employeeId)
-        ) {
-            throw new BadRequestException(
-                'Employee not exists!'
             );
         }
     }
