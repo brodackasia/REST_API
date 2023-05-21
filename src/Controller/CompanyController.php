@@ -29,10 +29,7 @@ class CompanyController extends AbstractController
         try {
             $companyData = $this->companyService->getCompany($companyId);
         } catch (BadRequestException $exception) {
-            return new JsonResponse(
-                ['message'=> $exception->getMessage()],
-                Response::HTTP_BAD_REQUEST
-            );
+            return $this->badRequestResponse($exception);
         }
 
         return new JsonResponse(
@@ -58,10 +55,7 @@ class CompanyController extends AbstractController
                 )
             );
         } catch (BadRequestException $exception) {
-            return new JsonResponse(
-                ['message' => $exception->getMessage()],
-                Response::HTTP_BAD_REQUEST
-            );
+            return $this->badRequestResponse($exception);
         }
 
         return new JsonResponse(
@@ -82,10 +76,7 @@ class CompanyController extends AbstractController
                 )
             );
         } catch (BadRequestException $exception) {
-            return new JsonResponse(
-                ['message' => $exception->getMessage()],
-                Response::HTTP_BAD_REQUEST
-            );
+            return $this->badRequestResponse($exception);
         }
 
         return new JsonResponse(
@@ -99,14 +90,19 @@ class CompanyController extends AbstractController
         try {
             $this->companyService->deleteCompany($companyId);
         } catch (BadRequestException $exception) {
-            return new JsonResponse(
-                ['message' => $exception->getMessage()],
-                status: Response::HTTP_BAD_REQUEST
-            );
+            return $this->badRequestResponse($exception);
         }
 
         return new JsonResponse(
             status: Response::HTTP_NO_CONTENT
+        );
+    }
+
+    private function badRequestResponse(BadRequestException $exception): JsonResponse
+    {
+        return new JsonResponse(
+            ['message' => $exception->getMessage()],
+            status: Response::HTTP_BAD_REQUEST
         );
     }
 }
