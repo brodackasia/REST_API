@@ -26,10 +26,7 @@ class AssignmentController extends AbstractController
         try {
             $this->assignmentService->assignEmployeeToCompany($employeeId, $companyId);
         } catch (BadRequestException $exception) {
-            return new JsonResponse(
-                ['message' => $exception->getMessage()],
-                Response::HTTP_BAD_REQUEST
-            );
+            return $this->badRequestResponse($exception);
         }
 
         return new JsonResponse(
@@ -43,14 +40,19 @@ class AssignmentController extends AbstractController
         try {
             $this->assignmentService->deleteEmployeeCompanyAssignment($employeeId, $companyId);
         } catch (BadRequestException $exception) {
-            return new JsonResponse(
-                ['message' => $exception->getMessage()],
-                Response::HTTP_BAD_REQUEST
-            );
+            return $this->badRequestResponse($exception);
         }
 
         return new JsonResponse(
             status: Response::HTTP_NO_CONTENT
+        );
+    }
+
+    private function badRequestResponse(BadRequestException $exception): JsonResponse
+    {
+        return new JsonResponse(
+            ['message' => $exception->getMessage()],
+            Response::HTTP_BAD_REQUEST
         );
     }
 }
