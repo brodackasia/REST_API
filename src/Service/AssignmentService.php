@@ -7,23 +7,13 @@ namespace App\Service;
 use App\Repository\AssignmentRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class AssignmentService
+readonly class AssignmentService
 {
-    private AssignmentRepository $assignmentRepository;
-
-    private EmployeeService $employeeService;
-
-    private CompanyService $companyService;
-
     public function __construct(
-        AssignmentRepository $assignmentRepository,
-        EmployeeService $employeeService,
-        CompanyService $companyService,
-    ) {
-        $this->assignmentRepository = $assignmentRepository;
-        $this->employeeService = $employeeService;
-        $this->companyService = $companyService;
-    }
+        public AssignmentRepository $assignmentRepository,
+        public EmployeeService $employeeService,
+        public CompanyService $companyService,
+    ) {}
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
     {

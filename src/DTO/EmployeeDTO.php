@@ -15,8 +15,7 @@ readonly class EmployeeDTO implements JsonSerializable
         public string $email,
         public ?string $phoneNumber,
         public array $companiesIds,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

@@ -11,19 +11,12 @@ use App\Repository\CompanyRepository;
 use App\Validator\Validator;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class CompanyService
+readonly class CompanyService
 {
-    private CompanyRepository $companyRepository;
-
-    private Validator $validator;
-
     public function __construct(
-        CompanyRepository $companyRepository,
-        Validator $validator,
-    ) {
-        $this->companyRepository = $companyRepository;
-        $this->validator = $validator;
-    }
+        public CompanyRepository $companyRepository,
+        public Validator $validator,
+    ) {}
 
     public function getCompany(int $companyId): CompanyDTO
     {

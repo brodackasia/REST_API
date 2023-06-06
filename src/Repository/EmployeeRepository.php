@@ -11,14 +11,11 @@ use App\DTO\EmployeeDTO;
 use App\DTO\Factory\EmployeeDTOFactory;
 use PDO;
 
-class EmployeeRepository
+readonly class EmployeeRepository
 {
-    private Connection $db;
-
-    public function __construct(Connection $db)
-    {
-        $this->db = $db;
-    }
+    public function __construct(
+        public Connection $db
+    ) {}
 
     public function getEmployeeData(int $employeeId): ?EmployeeDTO
     {

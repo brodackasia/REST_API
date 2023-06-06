@@ -11,19 +11,12 @@ use App\Repository\EmployeeRepository;
 use App\Validator\Validator;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class EmployeeService
+readonly class EmployeeService
 {
-    private EmployeeRepository $employeeRepository;
-
-    private Validator $validator;
-
     public function __construct(
-        EmployeeRepository $employeeRepository,
-        Validator $validator,
-    ) {
-        $this->employeeRepository = $employeeRepository;
-        $this->validator = $validator;
-    }
+        public EmployeeRepository $employeeRepository,
+        public Validator $validator,
+    ) {}
 
     public function getEmployee(int $employeeId): EmployeeDTO
     {

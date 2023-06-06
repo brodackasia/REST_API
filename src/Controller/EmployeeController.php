@@ -16,12 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EmployeeController extends AbstractController
 {
-    private EmployeeService $employeeService;
-
-    public function __construct(EmployeeService $employeeService)
-    {
-        $this->employeeService = $employeeService;
-    }
+    public function __construct(
+        public readonly EmployeeService $employeeService
+    ) {}
 
     #[Route('/employee/{employeeId}', name: 'get_employee', methods: 'GET')]
     public function getEmployee(int $employeeId): JsonResponse
