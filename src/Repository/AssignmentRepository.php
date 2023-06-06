@@ -7,14 +7,11 @@ namespace App\Repository;
 use App\Database\Connection;
 use PDO;
 
-class AssignmentRepository
+readonly class AssignmentRepository
 {
-    private Connection $db;
-
-    public function __construct(Connection $db)
-    {
-        $this->db = $db;
-    }
+    public function __construct(
+        public Connection $db
+    ) {}
 
     public function assignEmployeeToCompany(int $employeeId, int $companyId): void
     {

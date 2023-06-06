@@ -16,12 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CompanyController extends AbstractController
 {
-    private CompanyService $companyService;
-
-    public function __construct(CompanyService $companyService)
-    {
-        $this->companyService = $companyService;
-    }
+    public function __construct(
+        public readonly CompanyService $companyService
+    ) {}
 
     #[Route('/company/{companyId}', name: 'get_company', methods: 'GET')]
     public function getCompany(int $companyId): JsonResponse

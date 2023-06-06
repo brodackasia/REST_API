@@ -16,8 +16,7 @@ readonly class CompanyDTO implements JsonSerializable
         public string $companyCity,
         public string $companyZipCode,
         public array $employeesIds,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

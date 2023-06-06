@@ -13,12 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AssignmentController extends AbstractController
 {
-    private AssignmentService $assignmentService;
-
-    public function __construct(AssignmentService $assignmentService)
-    {
-        $this->assignmentService = $assignmentService;
-    }
+    public function __construct(
+        public readonly AssignmentService $assignmentService
+    ) {}
 
     #[Route('/assign/{employeeId}/{companyId}', name: 'assign', methods: 'POST')]
     public function assignEmployee(int $employeeId, int $companyId): JsonResponse

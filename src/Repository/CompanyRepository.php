@@ -11,14 +11,11 @@ use App\DTO\CompanyDTO;
 use App\DTO\Factory\CompanyDTOFactory;
 use PDO;
 
-class CompanyRepository
+readonly class CompanyRepository
 {
-    private Connection $db;
-
-    public function __construct(Connection $db)
-    {
-        $this->db = $db;
-    }
+    public function __construct(
+        public Connection $db
+    ) {}
 
     public function getCompanyData(int $companyId): CompanyDTO
     {
