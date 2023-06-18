@@ -38,3 +38,16 @@ INSERT INTO employee (name, surname, email, phone_number)
 INSERT INTO company_employee (company_id, employee_id)
     VALUES ('1', '1'),
            ('2', '2');
+
+ALTER TABLE
+    employee
+ADD COLUMN
+    is_active BOOL NOT NULL
+DEFAULT TRUE;
+
+
+ALTER TABLE
+    company
+ADD COLUMN
+    is_active BOOL NOT NULL
+DEFAULT TRUE;
