@@ -34,7 +34,11 @@ readonly class CompanyRepository
                 company_employee AS ce ON ce.company_id = c.id
             WHERE
                 c.id = :companyId
+            AND 
+                c.is_active = true
             GROUP BY
+                c.id
+            ORDER BY 
                 c.id
         SQL);
 
@@ -62,7 +66,11 @@ readonly class CompanyRepository
                 company AS c
             LEFT JOIN
                 company_employee AS ce ON ce.company_id = c.id
+            WHERE 
+                c.is_active = true
             GROUP BY
+                c.id
+            ORDER BY 
                 c.id
         SQL);
 
@@ -125,8 +133,10 @@ readonly class CompanyRepository
     public function deleteCompanyData(int $companyId): void
     {
         $statement = $this->db->prepare(<<<SQL
-            DELETE FROM
+            UPDATE 
                 company AS c
+            SET 
+                is_active = false
             WHERE 
                 c.id = :companyId
         SQL);
@@ -163,6 +173,8 @@ readonly class CompanyRepository
                 company AS c 
             WHERE 
                 c.id = :companyId
+            AND 
+                c.is_active = true
         SQL);
 
         $statement->execute([
