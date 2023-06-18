@@ -33,6 +33,8 @@ readonly class EmployeeRepository
                 company_employee AS ce ON ce.employee_id = e.id
             WHERE
                 e.id = :employeeId
+            AND 
+                e.is_active = true
             GROUP BY
                 e.id
         SQL);
@@ -62,6 +64,8 @@ readonly class EmployeeRepository
                 employee AS e
             LEFT JOIN
                 company_employee AS ce ON ce.employee_id = e.id
+            WHERE
+                e.is_active = true
             GROUP BY
                 e.id
         SQL);
@@ -122,8 +126,10 @@ readonly class EmployeeRepository
     public function deleteEmployeeData(int $employeeId): void
     {
         $statement = $this->db->prepare(<<<SQL
-            DELETE FROM
+            UPDATE 
                 employee AS e
+            SET 
+                is_active = false
             WHERE
                 e.id = :employeeId
         SQL);
@@ -160,6 +166,8 @@ readonly class EmployeeRepository
                 employee AS e
             WHERE 
                 e.id = :employeeId
+            AND 
+                e.is_active = true
         SQL);
 
         $statement->execute([
