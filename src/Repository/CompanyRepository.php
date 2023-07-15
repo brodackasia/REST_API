@@ -183,4 +183,24 @@ readonly class CompanyRepository
 
         return (bool) $statement->fetch(PDO::FETCH_ASSOC);
     }
-}
+
+    public function doesVatIdentificationNumberBelongsToCompany(int $companyId, string $vatIdentificationNumber): bool
+    {
+        $statement = $this->db->prepare(<<<SQL
+            SELECT 
+                1
+            FROM 
+                company AS c
+            WHERE 
+                c.vat_identification_number = :vatIdentificationNumber
+            AND
+                c.id = :companyId
+        SQL);
+
+        $statement->execute([
+            'companyId' => $companyId,
+            'vatIdentificationNumber' => $vatIdentificationNumber,
+        ]);
+
+        return (bool) $statement->fetch(PDO::FETCH_ASSOC);
+    }}

@@ -69,7 +69,7 @@ class CompanyController extends AbstractController
                 UpdateCompanyCommandFactory::createFromRequest(
                     json_decode($request->getContent(), true)
                 )->setCompanyId(
-                    $request->get('companyId')
+                    (int) $request->get('companyId')
                 )
             );
         } catch (BadRequestException $exception) {

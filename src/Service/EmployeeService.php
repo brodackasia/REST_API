@@ -40,7 +40,7 @@ readonly class EmployeeService
     public function updateEmployee(UpdateEmployeeCommand $updateEmployeeCommand): void
     {
         $this->throwIfEmployeeNotExists(
-            (int) $updateEmployeeCommand->getEmployeeId()
+            $updateEmployeeCommand->getEmployeeId()
         );
         
         $this->validator->validate($updateEmployeeCommand);
