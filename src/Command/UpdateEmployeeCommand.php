@@ -54,7 +54,7 @@ class UpdateEmployeeCommand
     )]
     private ?string $phoneNumber;
 
-    private string $employeeId;
+    private int $employeeId;
 
     public function setName(string $name): UpdateEmployeeCommand
     {
@@ -80,7 +80,7 @@ class UpdateEmployeeCommand
         return $this;
     }
 
-    public function setEmployeeId(string $employeeId): UpdateEmployeeCommand
+    public function setEmployeeId(int $employeeId): UpdateEmployeeCommand
     {
         $this->employeeId = $employeeId;
         return $this;
@@ -106,7 +106,7 @@ class UpdateEmployeeCommand
         return $this->phoneNumber;
     }
 
-    public function getEmployeeId(): string
+    public function getEmployeeId(): int
     {
         return $this->employeeId;
     }

@@ -56,7 +56,7 @@ class UpdateCompanyCommand
     #[Assert\NotBlank(message: 'Company zip code must not be blank!')]
     private string $zipCode;
 
-    private string $companyId;
+    private int $companyId;
 
     public function setName(string $name): UpdateCompanyCommand
     {
@@ -88,7 +88,7 @@ class UpdateCompanyCommand
         return $this;
     }
 
-    public function setCompanyId(string $companyId): UpdateCompanyCommand
+    public function setCompanyId(int $companyId): UpdateCompanyCommand
     {
         $this->companyId = $companyId;
         return $this;
@@ -119,7 +119,7 @@ class UpdateCompanyCommand
         return $this->zipCode;
     }
 
-    public function getCompanyId(): string
+    public function getCompanyId(): int
     {
         return $this->companyId;
     }

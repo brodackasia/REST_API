@@ -69,7 +69,7 @@ class EmployeeController extends AbstractController
                 UpdateEmployeeCommandFactory::createFromArray(
                     json_decode($request->getContent(), true)
                 )->setEmployeeId(
-                    $request->get('employeeId')
+                    (int) $request->get('employeeId')
                 )
             );
         } catch (BadRequestException $exception) {

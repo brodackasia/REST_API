@@ -44,12 +44,12 @@ readonly class CompanyService
     public function updateCompany(UpdateCompanyCommand $updateCompanyCommand): void
     {
         $this->throwIfCompanyNotExists(
-            (int) $updateCompanyCommand->getCompanyId()
+            $updateCompanyCommand->getCompanyId()
         );
 
         if (
             !$this->checkIfVatIdentificationNumberBelongsToCompany(
-                (int) $updateCompanyCommand->getCompanyId(),
+                $updateCompanyCommand->getCompanyId(),
                 $updateCompanyCommand->getVatIdentificationNumber()
             )
         ) {
