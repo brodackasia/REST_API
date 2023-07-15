@@ -47,9 +47,16 @@ readonly class CompanyService
             (int) $updateCompanyCommand->getCompanyId()
         );
 
-        $this->throwIfVatIdentificationNumberAlreadyExists(
-            $updateCompanyCommand->getVatIdentificationNumber()
-        );
+        if (
+            !$this->checkIfVatIdentificationNumberBelongsToCompany(
+                (int) $updateCompanyCommand->getCompanyId(),
+                $updateCompanyCommand->getVatIdentificationNumber()
+            )
+        ) {
+            $this->throwIfVatIdentificationNumberAlreadyExists(
+                $updateCompanyCommand->getVatIdentificationNumber()
+            );
+        }
 
         $this->validator->validate($updateCompanyCommand);
 
@@ -72,6 +79,11 @@ readonly class CompanyService
                 'Vat Identification Number must be unique!'
             );
         }
+    }
+
+    private function checkIfVatIdentificationNumberBelongsToCompany(int $companyId, string $vatIdentificationNumber): bool
+    {
+        return $this->companyRepository->doesVatIdentificationNumberBelongsToCompany($companyId, $vatIdentificationNumber);
     }
 
     public function throwIfCompanyNotExists(int $companyId): void
